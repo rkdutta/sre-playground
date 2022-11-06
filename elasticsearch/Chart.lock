@@ -1,0 +1,9 @@
+dependencies:
+- name: cert-manager
+  repository: https://charts.jetstack.io
+  version: v1.10.0
+- name: jaeger
+  repository: https://jaegertracing.github.io/helm-charts
+  version: 0.62.1
+digest: sha256:9ce81ace317838b02c3d2713b9fbd32b262c3a4cacbc4a8ad9bab7fa62ea4dec
+generated: "2022-10-20T20:21:05.796433+02:00"

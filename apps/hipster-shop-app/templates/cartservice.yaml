@@ -1,0 +1,76 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cartservice
+  namespace: {{ default "app" .Values.namespace | quote }}
+spec:
+  selector:
+    matchLabels:
+      app: cartservice
+  template:
+    metadata:
+      labels:
+        app: cartservice
+      # annotations:
+      #    sidecar.opentelemetry.io/inject: "true"
+      #    instrumentation.opentelemetry.io/inject-dotnet: "true"
+      #    instrumentation.opentelemetry.io/container-names: "server"
+    spec:
+      serviceAccountName: default
+      terminationGracePeriodSeconds: 5
+      # securityContext:
+      #   fsGroup: 1000
+      #   runAsGroup: 1000
+      #   runAsNonRoot: true
+      #   runAsUser: 1000
+      containers:
+        - name: server
+          # securityContext:
+          #   allowPrivilegeEscalation: false
+          #   capabilities:
+          #     drop:
+          #       - all
+          #   privileged: false
+          #   readOnlyRootFilesystem: true
+          image: gcr.io/google-samples/microservices-demo/cartservice:v0.4.1
+          #image: gcr.io/google-samples/microservices-demo/cartservice:v0.4.1-native-grpc-probes
+          ports:
+            - containerPort: 7070
+          env:
+            - name: REDIS_ADDR
+              value: "redis-cart:6379"
+          resources:
+            requests:
+              cpu: 200m
+              memory: 256Mi
+            limits:
+              cpu: 300m
+              memory: 512Mi
+          readinessProbe:
+            timeoutSeconds: 30
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            exec:
+              command: ["/bin/grpc_health_probe", "-addr=:7070", "-rpc-timeout=15s"]
+          livenessProbe:
+            timeoutSeconds: 30
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            exec:
+              command: ["/bin/grpc_health_probe", "-addr=:7070", "-rpc-timeout=15s"]
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cartservice
+  namespace: {{ default "app" .Values.namespace | quote }}
+spec:
+  type: ClusterIP
+  selector:
+    app: cartservice
+  ports:
+    - name: grpc
+      port: 7070
+      targetPort: 7070
+

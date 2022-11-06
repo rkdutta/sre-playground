@@ -1,0 +1,26 @@
+apiVersion: opentelemetry.io/v1alpha1
+kind: OpenTelemetryCollector
+metadata:
+  name: otel-sidecar-service
+  namespace: app
+spec:
+  mode: sidecar
+  config: |
+    receivers:
+      fluentforward:
+        endpoint: 0.0.0.0:8006
+      otlp:
+        protocols:
+          grpc:
+          http:
+    exporters:
+      logging:
+      otlp:
+        endpoint: otel-local-service-collector:4317
+        tls:
+          insecure: true
+    service:
+      pipelines:
+        traces:
+          receivers: [otlp]
+          exporters: [logging,otlp]

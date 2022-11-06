@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    istio-injection: enabled
+  annotations:
+    instrumentation.opentelemetry.io/inject-java: "opentelemetry/otel-instrumentation"
+  name: {{ default "app" .Values.namespace | quote }}

@@ -1,0 +1,81 @@
+---
+apiVersion: opentelemetry.io/v1alpha1
+kind: OpenTelemetryCollector
+metadata:
+  name: otel-remote-service
+  labels:
+    otel: remote-service
+spec:
+  image: otel/opentelemetry-collector-contrib:latest
+  mode: deployment
+  config: |
+    receivers:
+      otlp:
+        protocols:
+          grpc:
+          http:
+    exporters:
+      logging:
+        loglevel: info
+      jaeger:
+        endpoint: "jaeger-collector.observability.svc:14250"   
+        tls:
+          insecure: true  
+      zipkin:
+        endpoint: "http://zipkin.observability.svc:9411/api/v2/spans"
+        tls:
+          insecure: true
+      prometheusremotewrite/operator:
+        endpoint: 'http://prometheus-kube-prometheus-prometheus.prometheus.svc:9090/api/v1/write'
+        tls:
+          insecure: true
+      prometheusremotewrite/loki:
+        endpoint: 'http://loki-prometheus-server.loki-stack.svc:80/api/v1/write'
+        tls:
+          insecure: true
+      elasticsearch/trace:
+        endpoints: [https://elasticsearch-es-http.elasticsearch.svc:9200]
+        traces_index: jaeger-service-2022-11-05
+        user: elastic
+        password: {{ .Values.ES_PASSWORD }}
+        tls:
+          insecure_skip_verify: true
+      elasticsearch/trace2:
+        endpoints: [http://elasticsearch.observability.svc:9200]
+        traces_index: mytraces_index
+      elasticsearch/log:
+        endpoints: [https://elasticsearch-es-http.elasticsearch.svc:9200]
+        logs_index: mylogs_index 
+        user: elastic
+        password: {{ .Values.ES_PASSWORD }}
+        tls:
+          insecure_skip_verify: true
+      loki:
+        #endpoint: http://loki.loki-stack.svc:3100/loki/api/v1/push
+        endpoint: http://loki.loki-stack.svc:3100/api/prom/push
+    processors:
+      attributes:
+        actions:
+        - action: insert
+          key: loki.attribute.labels
+          value: http.status_code
+
+      resource:
+        attributes:
+        - action: insert
+          key: loki.attribute.labels
+          value: http.status
+        - action: insert
+          key: loki.resource.labels
+          value: host.name, pod.name
+    service:
+      pipelines:
+        traces:
+          receivers: [otlp]
+          exporters: [logging,jaeger]
+        metrics:
+          receivers: [otlp]
+          exporters: [prometheusremotewrite/operator]
+        logs:
+          receivers: [otlp]
+          exporters: [logging,loki]

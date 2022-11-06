@@ -1,0 +1,52 @@
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+nodes:
+  - role: control-plane
+    extraMounts:
+      - hostPath: .
+        containerPath: /etc/kubernetes/tracing
+      - hostPath: ./kind/resolv.conf
+        containerPath: /etc/resolv.conf
+    kubeadmConfigPatches:
+      - |
+        apiVersion: kubeadm.k8s.io/v1beta3
+        kind: ClusterConfiguration
+        apiServer:
+          extraArgs:
+            tracing-config-file: /etc/kubernetes/tracing/kube-apiserver-tracing-config.yaml
+          extraVolumes:
+            - name: tracing
+              hostPath: /etc/kubernetes/tracing/kind/kube-apiserver-tracing-config.yaml
+              mountPath: /etc/kubernetes/tracing/kube-apiserver-tracing-config.yaml
+              readOnly: true
+              pathType: "File"
+        etcd:
+          local:
+            extraArgs:
+              experimental-enable-distributed-tracing: "true"
+              experimental-distributed-tracing-service-name: etcd
+              experimental-distributed-tracing-address: otel-daemonset-service-collector.opentelemetry.svc.cluster.local:4317
+      - |
+        apiVersion: kubelet.config.k8s.io/v1beta1
+        kind: KubeletConfiguration
+        featureGates:
+          KubeletTracing: true
+        tracing:
+          samplingRatePerMillion: 1000
+          endpoint: otel-daemonset-service-collector.opentelemetry.svc.cluster.local:4317
+  - role: worker
+    # extraMounts:
+    # - hostPath: ./kind/resolv.conf
+    #   containerPath: /etc/resolv.conf
+    kubeadmConfigPatches:
+      - |
+        apiVersion: kubelet.config.k8s.io/v1beta1
+        kind: KubeletConfiguration
+        featureGates:
+          KubeletTracing: true
+        tracing:
+          samplingRatePerMillion: 1000
+          endpoint: otel-daemonset-service-collector.opentelemetry.svc.cluster.local:4317
+featureGates:
+  APIServerTracing: true
+  KubeletTracing: true

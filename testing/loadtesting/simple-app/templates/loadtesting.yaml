@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: loadtesting-simple-app
+  name: loadtesting-simple-app
+  namespace: {{ default "app" .Values.namespace | quote }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: loadtesting-simple-app
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: loadtesting-simple-app
+    spec:
+      containers:
+      - image: radial/busyboxplus:curl
+        name: busyboxplus
+        resources: {} 
+        args:
+        - /bin/sh
+        - -c
+        - while true; do curl -v  http://front-service.simple-app.svc.cluster.local.:8080/customerDetails/1; sleep 1; done
+        
