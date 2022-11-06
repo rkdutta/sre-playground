@@ -4,6 +4,12 @@
 This repository is a playground for SRE and reliable monitoring setup for demo purpose. E2E solution runs in local on kind k8 clusters. 
 
 
+## Tools requirement
+```
+1. Docker
+2. Kind
+
+```
 
 ### Infrastructure
 - [x] Two node cluster with Kubernetes v1.25
@@ -11,31 +17,32 @@ This repository is a playground for SRE and reliable monitoring setup for demo p
 - [x] Prometheus (for metrics via Otel)
 - [x] Loki (for logs via fluent-bit)
 - [x] Jaeger (for tracing via Otel)
-- [x] Golden signal correlation (Metric -> Log -> Traces)
+- [x] ElasticSearch for traces storage
+- [x] Jaeger & ElasticSearch integration
+- [x] Out-of-the-box auto-instrumentation using OpenTelemetry
+- [x] Trace collection using Otel
+- [x] Metric collection using Otel
+- [x] Grafana startup with custom datasources(prometheus,loki,jaeger)
+- [x] Golden signal correlation in Grafana (Metric -> Log -> Traces)
+- [ ] Logs collection using Otel
 - [ ] Security
 - [ ] Ingress
 
 ### Application
 - [x] simple-app (two spring-boot microservices) 
-  - [x] frontend api
-  - [x] backend api
+  - [x] [frontend api](https://github.com/rkdutta/otel-demo-api-service)
+  - [x] [backend api](https://github.com/rkdutta/otel-demo-customer-service)
   
 - [ ] hipster
 
 ### Testing
 - [x] load testing
-  - [ ] simple-app
+  - [x] simple-app
   - [ ] hipster
 - [ ] chaos testing
   - [ ] simple-app
   - [ ] hipster   
 
-## Required
-```
-1. Docker
-2. Kind
-
-```
 
 ## Golden signal correlation 
 <img width="1441" alt="image" src="https://user-images.githubusercontent.com/49343621/200201465-6b71783e-2003-4051-853e-83ee68e7211d.png">
