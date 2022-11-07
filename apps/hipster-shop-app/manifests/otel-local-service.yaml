@@ -2,7 +2,6 @@ apiVersion: opentelemetry.io/v1alpha1
 kind: OpenTelemetryCollector
 metadata:
   name: otel-local-service
-  namespace: app
 spec:
   mode: deployment
   config: |
@@ -14,7 +13,7 @@ spec:
     exporters:
       logging:
       otlp:
-        endpoint: otel-remote-service-collector.observability.svc.cluster.local:4317
+        endpoint: otel-remote-service-collector.opentelemetry.svc.cluster.local:4317
         tls:
           insecure: true
     service:
@@ -22,6 +21,6 @@ spec:
         traces:
           receivers: [otlp]
           exporters: [logging,otlp]
-        logs:
+        metrics:
           receivers: [otlp]
-          exporters: [otlp]
+          exporters: [logging,otlp]

@@ -65,7 +65,7 @@ grafana:
         jsonData:
           derivedFields:
           - datasourceUid: Trace
-            matcherRegex: "traceID=(\\w+)"
+            matcherRegex: "trace_id=(\\w+)"
             name: TraceID
             url: "$${__value.raw}"
 
