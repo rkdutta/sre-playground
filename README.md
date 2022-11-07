@@ -24,6 +24,7 @@ This repository is a playground for SRE and reliable monitoring setup for demo p
 - [x] Metric collection using Otel
 - [x] Grafana startup with custom datasources(prometheus,loki,jaeger)
 - [x] Golden signal correlation in Grafana (Metric -> Log -> Traces)
+- [x] Generate and collect custom metrics (visits_total)
 - [ ] Logs collection using Otel
 - [ ] Security
 - [ ] Ingress
