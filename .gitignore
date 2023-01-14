@@ -1,0 +1,4 @@
+helmfile-*.yaml
+install-hipster-shop.sh
+hipster-shop-chart-values.defaultValues.yaml
+values copy.yaml
