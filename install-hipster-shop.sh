@@ -6,4 +6,4 @@ helm repo add open-telemetry https://open-telemetry.github.io/opentelemetry-helm
 
 helm upgrade --install \
  hipster-shop open-telemetry/opentelemetry-demo \
- --values apps/hipster-shop-app/values-latest.yaml
+ --values apps/hipster-shop-app/values.yaml
