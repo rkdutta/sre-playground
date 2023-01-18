@@ -1,7 +1,3 @@
-test_pod:
-  image: bats/bats:v1.1.0
-  pullPolicy: IfNotPresent
-
 loki:
   enabled: true
   isDefault: true
@@ -19,120 +15,15 @@ loki:
   datasource:
     jsonData: {}
     uid: ""
-
-
-promtail:
-  enabled: false
-  config:
-    logLevel: info
-    serverPort: 3101
-    clients:
-      - url: http://{{ .Release.Name }}:3100/loki/api/v1/push
-
-fluent-bit:
-  enabled: true
-
-grafana:
-  enabled: true
-  image:
-    tag: 8.3.5
-  sidecar:
-    datasources:
-      enabled: false
-      maxLines: 1000
-  datasources:    
-    datasources.yaml:
-      apiVersion: 1
-      datasources:
-      - name: Prometheus
-        type: prometheus
-        access: proxy
-        url: "http://prometheus-kube-prometheus-prometheus.prometheus.svc:9090"
-        version: 1
-        isDefault: false
-      - name: Trace
-        type: jaeger
-        access: proxy
-        url: "http://jaeger-query.observability.svc:80"
-        version: 1
-        isDefault: false
-      - name: Loki
-        type: loki
-        access: proxy
-        url: "http://loki:3100"
-        version: 1
-        isDefault: false
-        jsonData:
-          derivedFields:
-          - datasourceUid: Trace
-            matcherRegex: "trace_id=(\\w+)"
-            name: TraceID
-            url: "$${__value.raw}"
-
 prometheus:
   enabled: false
-  isDefault: false
-  #url: http://{{ include "prometheus.fullname" .}}:{{ .Values.prometheus.server.service.servicePort }}{{ .Values.prometheus.server.prefixURL }}
-  url: http://prometheus-kube-prometheus-prometheus.prometheus.svc:9090
-  datasource:
-    jsonData: {}
-
 filebeat:
   enabled: false
-  filebeatConfig:
-    filebeat.yml: |
-      # logging.level: debug
-      filebeat.inputs:
-      - type: container
-        paths:
-          - /var/log/containers/*.log
-        processors:
-        - add_kubernetes_metadata:
-            host: ${NODE_NAME}
-            matchers:
-            - logs_path:
-                logs_path: "/var/log/containers/"
-      output.logstash:
-        hosts: ["logstash-loki:5044"]
-
 logstash:
   enabled: false
-  image: grafana/logstash-output-loki
-  imageTag: 1.0.1
-  filters:
-    main: |-
-      filter {
-        if [kubernetes] {
-          mutate {
-            add_field => {
-              "container_name" => "%{[kubernetes][container][name]}"
-              "namespace" => "%{[kubernetes][namespace]}"
-              "pod" => "%{[kubernetes][pod][name]}"
-            }
-            replace => { "host" => "%{[kubernetes][node][name]}"}
-          }
-        }
-        mutate {
-          remove_field => ["tags"]
-        }
-      }
-  outputs:
-    main: |-
-      output {
-        loki {
-          url => "http://loki:3100/loki/api/v1/push"
-          #username => "test"
-          #password => "test"
-        }
-        # stdout { codec => rubydebug }
-      }
-
-# proxy is currently only used by loki test pod
-# Note: If http_proxy/https_proxy are set, then no_proxy should include the
-# loki service name, so that tests are able to communicate with the loki
-# service.
-proxy:
-  http_proxy: ""
-  https_proxy: ""
-  no_proxy: ""
-
+promtail:
+  enabled: false
+fluent-bit:
+  enabled: true
+grafana:
+  enabled: false
