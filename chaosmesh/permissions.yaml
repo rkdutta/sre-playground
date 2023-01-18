@@ -1,9 +1,3 @@
-kind: ServiceAccount
-apiVersion: v1
-metadata:
-  namespace: chaos-mesh
-  name: account-cluster-manager
-
 ---
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
@@ -15,7 +9,8 @@ rules:
   verbs: ["get", "watch", "list"]
 - apiGroups: ["chaos-mesh.org"]
   resources: [ "*" ]
-  verbs: ["get", "list", "watch", "create", "delete", "patch", "update"]
+  #verbs: ["get", "list", "watch", "create", "delete", "patch", "update"]
+  verbs: ["get", "list", "watch"]
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -24,9 +19,12 @@ metadata:
   name: bind-cluster-manager
 subjects:
 - kind: ServiceAccount
-  name: account-cluster-manager
+  name: chaos-dashboard
   namespace: chaos-mesh
 roleRef:
   kind: ClusterRole
   name: role-cluster-manager
   apiGroup: rbac.authorization.k8s.io
+
+---
+# kubectl -n chaos-mesh create token chaos-dashboard
