@@ -1,0 +1,21 @@
+apiVersion: chaos-mesh.org/v1alpha1
+kind: NetworkChaos
+metadata:
+  name: partition
+  namespace: chaos-mesh
+spec:
+  action: partition
+  mode: all
+  selector:
+    namespaces:
+      - default
+    labelSelectors:
+        app.kubernetes.io/component: 'frontend'
+  direction: to
+  target:
+    mode: all
+    selector:
+      namespaces:
+        - default
+      labelSelectors:
+        app.kubernetes.io/component: 'adservice'
