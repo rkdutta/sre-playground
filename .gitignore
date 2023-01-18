@@ -6,3 +6,4 @@ kind-cluster-2.yaml
 install-kind-cluster.sh
 gremlin/
 .DS_Store
+*.bak
