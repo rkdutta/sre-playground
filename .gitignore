@@ -6,4 +6,4 @@ gremlin/
 .DS_Store
 *.bak
 values-*.yaml
-dump/
+.dump/
