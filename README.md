@@ -41,7 +41,7 @@ This repository is a playground for SRE and reliable monitoring setup for demo p
   - [x] simple-app
   - [x] hipster
 - [x] chaos testing
-  - chaos-mesh
+  - [x] chaos-mesh
     - [x] hipster
       - [x] network-faults
         - [x] bandwidth trip
