@@ -34,15 +34,27 @@ This repository is a playground for SRE and reliable monitoring setup for demo p
   - [x] [frontend api](https://github.com/rkdutta/otel-demo-api-service)
   - [x] [backend api](https://github.com/rkdutta/otel-demo-customer-service)
   
-- [ ] hipster
+- [x] hipster
 
 ### Testing
 - [x] load testing
   - [x] simple-app
-  - [ ] hipster
-- [ ] chaos testing
-  - [ ] simple-app
-  - [ ] hipster   
+  - [x] hipster
+- [x] chaos testing
+  - chaos-mesh
+    - [x] hipster
+      - [x] network-faults
+        - [x] bandwidth trip
+        - [x] delay
+        - [x] partition
+      - [x] pod-faults
+        - [x] container kill
+        - [x] pod failure
+        - [x] pod kill
+      - [x] stress-conditions
+        - [x] cpu stress
+        - [x] memory stress
+    - [ ] simple-app   
 
 
 ## Golden signal correlation 
