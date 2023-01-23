@@ -34,9 +34,7 @@ This repository is a playground for SRE and reliable monitoring setup for demo p
   - [x] [frontend api](https://github.com/rkdutta/otel-demo-api-service)
   - [x] [backend api](https://github.com/rkdutta/otel-demo-customer-service)
   
-- [x] [hipster](/apps/hipster-shop-app/)\n
-  
-  [source](https://github.com/open-telemetry/opentelemetry-demo)
+- [x] [hipster](/apps/hipster-shop-app/) ([chart-source](https://github.com/open-telemetry/opentelemetry-demo))
 
 ### Testing
 - [x] load testing
