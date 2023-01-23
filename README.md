@@ -41,17 +41,17 @@ This repository is a playground for SRE and reliable monitoring setup for demo p
   - [x] simple-app
   - [x] hipster
 - [x] chaos testing
-  - [x] chaos-mesh
+  - [x] [chaos-mesh](/chaosmesh/experiments/)
     - [x] hipster
-      - [x] network-faults
+      - [x] [network-faults](/chaosmesh/experiments/network-faults/)
         - [x] bandwidth trip
         - [x] delay
         - [x] partition
-      - [x] pod-faults
+      - [x] [pod-faults](/chaosmesh/experiments/pod-faults/)
         - [x] container kill
         - [x] pod failure
         - [x] pod kill
-      - [x] stress-conditions
+      - [x] [stress-conditions](/chaosmesh/experiments/stress-conditions/)
         - [x] cpu stress
         - [x] memory stress
     - [ ] simple-app   
