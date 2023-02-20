@@ -50,13 +50,6 @@ if $FORCE_BUILD_IMAGES_LOCALLY ; then
 # Setting kubectl client context to the current cluster
 kubectl config use-context kind-$ClusterName
 
-# verifying if the kind cluster system pods are up and running
-#if kubectl -n kube-system get pods -o custom-columns=POD:.metadata.name,STATUS:.status.phase --no-headers
-# if kubectl -n kube-system get pods -o custom-columns=POD:.metadata.name,STATUS:.status.phase | grep -i running; do
-#   echo "`date` INFO cluster exists. Skiping reinstall.."
-# else
-# fi
-
 #kind delete clusters sre-demo-site
 kind create cluster --config $KIND_CONFIG_FILE --name $ClusterName
 
