@@ -7,3 +7,6 @@ gremlin/
 *.bak
 values-*.yaml
 .dump/
+opentelemetry-demo
+nohup.out
+istio-*/

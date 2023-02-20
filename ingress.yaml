@@ -1,0 +1,49 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: kiali-ingress
+  namespace: istio-system
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: ""
+spec:
+  ingressClassName: nginx
+  rules:
+  - http:
+      paths:
+      - path: /kiali
+        pathType: Prefix
+        backend:
+          service:
+            name: kiali
+            port: 
+              number: 20001
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: hipster-shop-ingress
+  namespace: hipster-shop
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: "/jaeger/ui"
+spec:
+  ingressClassName: nginx
+  rules:
+  - http:
+      paths:
+      - path: /shop/grafana
+        pathType: Prefix
+        backend:
+          service:
+            name: hipster-shop-frontendproxy
+            port: 
+              number: 8080
+  - http:
+      paths:
+      - path: /jaeger/ui
+        pathType: Prefix
+        backend:
+          service:
+            name: hipster-shop-frontendproxy
+            port: 
+              number: 8080

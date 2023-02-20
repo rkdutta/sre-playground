@@ -1,6 +1,42 @@
 components:
+  accountingService:
+    enabled: true
+  adService:
+    enabled: true
+  cartService:
+    enabled: true
+  checkoutService:
+    enabled: true
+  currencyService:
+    enabled: true
+  emailService:
+    enabled: true
   featureflagService:
-    enabled: false
+    enabled: true
+  ffsPostgres:
+    enabled: true
+  frauddetectionService:
+    enabled: true
+  frontend:
+    enabled: true
+  frontendProxy:
+    enabled: true
+  kafka:
+    enabled: true
+  loadgenerator:
+    enabled: true 
+  paymentService:
+    enabled: true
+  productCatalogService:
+    enabled: true
+  quoteService:
+    enabled: true
+  recommendationService:
+    enabled: true
+  redis:
+    enabled: true
+  shippingService:
+    enabled: true
 prometheus:
   kube-state-metrics:
     enabled: true
