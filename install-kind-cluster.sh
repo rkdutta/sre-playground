@@ -72,26 +72,7 @@ done
 echo " `date` >>>>> kubernetes started..."
 
 # Install CNI: Cilium
-helm upgrade \
-    --install cilium cilium/cilium \
-    --namespace kube-system \
-    --set image.pullPolicy=IfNotPresent \
-    --set ipam.mode=kubernetes \
-    --set kubeProxyReplacement=strict \
-    --set k8sServiceHost=$ClusterName-control-plane \
-    --set k8sServicePort=6443 \
-    --set bpf.masquerade=true \
-    --set hubble.relay.enabled=true \
-    --set hubble.ui.enabled=true \
-    --set hubble.tls.auto.enabled=true \
-    --set hubble.tls.auto.method=helm \
-    --reuse-values \
-    --set ipMasqAgent.enabled=true \
-    --set prometheus.enabled=true \
-    --set operator.prometheus.enabled=true \
-    --set hubble.enabled=true \
-    --set hubble.metrics.enabled="{dns,drop,tcp,flow,port-distribution,icmp,http}"
-
+sh install-cilium.sh $ClusterName
 
 # verifying if coreDNS pods are up and running
 until kubectl -n kube-system describe deployments.apps coredns | grep "0 unavailable"; do
@@ -116,14 +97,12 @@ do
 done
 
 
+#install loki
+sh install-loki.sh
 
 #install hipster application
-helm repo add open-telemetry https://open-telemetry.github.io/opentelemetry-helm-charts
-helm upgrade --install \
- hipster-shop open-telemetry/opentelemetry-demo \
- --namespace "hipster-shop" \
- --create-namespace \
- --values apps/hipster-shop-app/values.yaml
+sh install-hipster-shop.sh
+
 
 
 echo "SUCCESS.."
