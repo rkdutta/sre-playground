@@ -1,7 +1,6 @@
 helmfile-*.yaml
 hipster-shop-chart-values.defaultValues.yaml
 kind-cluster-2.yaml
-install-kind-cluster.sh
 gremlin/
 .DS_Store
 *.bak
