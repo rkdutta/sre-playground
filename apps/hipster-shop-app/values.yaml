@@ -37,11 +37,26 @@ components:
     enabled: true
   shippingService:
     enabled: true
+observability:
+  grafana:
+    enabled: true
+  jaeger:
+    enabled: true
+  otelcol:
+    enabled: true
+  prometheus:
+    enabled: true
 prometheus:
   kube-state-metrics:
     enabled: true
+    tolerations:
+    - effect: NoSchedule
+      operator: Exists
   prometheus-node-exporter:
     enabled: true
+    tolerations:
+    - effect: NoSchedule
+      operator: Exists
   serverFiles:
     prometheus.yml:
       scrape_configs:
@@ -55,9 +70,14 @@ prometheus:
           regex: true
           source_labels:
           - __meta_kubernetes_pod_annotation_opentelemetry_community_demo
-      - job_name: 'node-exporter'
-        kubernetes_sd_configs:
-          - role: endpoints
+      - job_name: node-exporter
+        static_configs:
+        - targets:
+          - 'hipster-shop-prometheus-node-exporter:9100'
+      - job_name: kube-state-metrics
+        static_configs:
+        - targets:
+          - 'hipster-shop-kube-state-metrics:8080'
 grafana:
   datasources:
     datasources.yaml:
@@ -78,7 +98,7 @@ grafana:
       - name: Loki
         type: loki
         access: proxy
-        url: "http://loki.loki-stack.svc:3100"
+        url: "http://loki.loki.svc:3100"
         version: 1
         isDefault: false
         jsonData:
