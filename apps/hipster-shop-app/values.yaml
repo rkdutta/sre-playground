@@ -39,71 +39,20 @@ components:
     enabled: true
 observability:
   grafana:
-    enabled: true
+    enabled: false # The demo is another grafana instance
   jaeger:
     enabled: true
   otelcol:
     enabled: true
   prometheus:
-    enabled: true
-prometheus:
-  kube-state-metrics:
-    enabled: true
-    tolerations:
-    - effect: NoSchedule
-      operator: Exists
-  prometheus-node-exporter:
-    enabled: true
-    tolerations:
-    - effect: NoSchedule
-      operator: Exists
-  serverFiles:
-    prometheus.yml:
-      scrape_configs:
-      - job_name: opentelemetry-community-demo
-        kubernetes_sd_configs:
-        - namespaces:
-            own_namespace: true
-          role: pod
-        relabel_configs:
-        - action: keep
-          regex: true
-          source_labels:
-          - __meta_kubernetes_pod_annotation_opentelemetry_community_demo
-      - job_name: node-exporter
-        static_configs:
-        - targets:
-          - 'hipster-shop-prometheus-node-exporter:9100'
-      - job_name: kube-state-metrics
-        static_configs:
-        - targets:
-          - 'hipster-shop-kube-state-metrics:8080'
-grafana:
-  datasources:
-    datasources.yaml:
-      apiVersion: 1
-      datasources:
-      - editable: true
-        isDefault: true
-        name: Prometheus
-        type: prometheus
-        uid: webstore-metrics
-        url: http://{{ include "otel-demo.name" . }}-prometheus-server:9090
-      - editable: true
-        isDefault: false
-        name: Jaeger
-        type: jaeger
-        uid: webstore-traces
-        url: http://{{ include "otel-demo.name" . }}-jaeger-query:16686/jaeger/ui
-      - name: Loki
-        type: loki
-        access: proxy
-        url: "http://loki.loki.svc:3100"
-        version: 1
-        isDefault: false
-        jsonData:
-          derivedFields:
-          - datasourceUid: Jaeger
-            matcherRegex: "trace_id=(\\w+)"
-            name: TraceID
-            url: "$${__value.raw}"
+    enabled: false # The demo is another prometheus instance
+opentelemetry-collector:
+  config:
+    service:
+      pipelines:
+        metrics:
+          exporters:
+            - prometheus
+        traces:
+          exporters:
+            - otlp
