@@ -1,0 +1,12 @@
+grafana:
+  adminPassword: prom-operator
+  adminUser: admin
+nodeExporter:
+  enabled: true
+prometheus:
+  prometheusSpec:
+    additionalScrapeConfigs:
+    - job_name: opentelemetry-community-demo
+      static_configs:
+      - targets:
+        - 'hipster-shop-otelcol.default.svc:9464'
