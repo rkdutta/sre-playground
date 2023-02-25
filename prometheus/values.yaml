@@ -1,6 +1,26 @@
 grafana:
   adminPassword: prom-operator
   adminUser: admin
+  additionalDataSources:
+      - editable: false
+        isDefault: false
+        name: Jaeger
+        type: jaeger
+        uid: webstore-traces
+        url: http://hipster-shop-jaeger-query.default.svc:16686/jaeger/ui
+      - name: Loki
+        editable: false
+        type: loki
+        access: proxy
+        url: "http://loki.loki.svc:3100"
+        version: 1
+        isDefault: false
+        jsonData:
+          derivedFields:
+          - datasourceUid: Jaeger
+            matcherRegex: "trace_id=(\\w+)"
+            name: TraceID
+            url: "$${__value.raw}"
 nodeExporter:
   enabled: true
 prometheus:

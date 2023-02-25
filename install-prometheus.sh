@@ -8,6 +8,6 @@ helm upgrade --install \
  --atomic \
  --namespace prometheus \
  --create-namespace \
- --values prometheus/values.yaml 
+ --values prometheus/values.yaml
 
 echo "`date` >>>>> prometheus started..."
