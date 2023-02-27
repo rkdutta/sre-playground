@@ -18,7 +18,7 @@ spec:
             name: app-hipster-shop-frontendproxy
             port: 
               number: 8080
-    host: "demo.sre-playground.com"
+    host: "demo.sreplayground.local"
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -39,7 +39,7 @@ spec:
             name: prometheus-operated
             port: 
               number: 9090
-    host: "prometheus.sre-playground.com"
+    host: "prometheus.sreplayground.local"
   - http:
       paths:
       - path: /
@@ -49,7 +49,7 @@ spec:
             name: prometheus-grafana
             port: 
               number: 80
-    host: "grafana.sre-playground.com"
+    host: "grafana.sreplayground.local"
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -70,7 +70,7 @@ spec:
             name: app-hipster-shop-loadgenerator
             port: 
               number: 8089
-    host: "loadtest.sre-playground.com"
+    host: "loadgen.sreplayground.local"
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -91,7 +91,7 @@ spec:
             name: chaos-dashboard
             port: 
               number: 2333
-    host: "chaostest.sre-playground.com"
+    host: "chaostest.sreplayground.local"
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -112,4 +112,4 @@ spec:
             name: app-hipster-shop-jaeger-query
             port: 
               number: 16686
-    host: "tracing.sre-playground.com"
+    host: "tracing.sreplayground.local"
