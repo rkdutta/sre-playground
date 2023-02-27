@@ -1,7 +1,8 @@
 # SRE-Playground
 
 ## Background
-This repository is a playground for SRE and reliable monitoring setup for demo purpose. E2E solution runs in local on kind k8 clusters. 
+This repository is a playground for SRE and reliable monitoring setup for demo purpose. 
+E2E solution runs in local on k8 clusters provisioned with kind.
 
 
 ## Tools requirement
@@ -11,34 +12,11 @@ This repository is a playground for SRE and reliable monitoring setup for demo p
 
 ```
 
-### Infrastructure
-- [x] Two node cluster with Kubernetes v1.25
-- [x] Distributed and reliable open-telemetry(Otel) setup
-- [x] Prometheus (for metrics via Otel)
-- [x] Loki (for logs via fluent-bit)
-- [x] Jaeger (for tracing via Otel)
-- [x] ElasticSearch for traces storage
-- [x] Jaeger & ElasticSearch integration
-- [x] Out-of-the-box auto-instrumentation using OpenTelemetry
-- [x] Trace collection using Otel
-- [x] Metric collection using Otel
-- [x] Grafana startup with custom datasources(prometheus,loki,jaeger)
-- [x] Golden signal correlation in Grafana (Metric -> Log -> Traces)
-- [x] Generate and collect custom metrics (visits_total)
-- [ ] Logs collection using Otel
-- [ ] Security
-- [ ] Ingress
-
 ### Application
-- [x] simple-app (two spring-boot microservices) 
-  - [x] [frontend api](https://github.com/rkdutta/otel-demo-api-service)
-  - [x] [backend api](https://github.com/rkdutta/otel-demo-customer-service)
-  
 - [x] [hipster](/apps/hipster-shop-app/) ([chart-source](https://github.com/open-telemetry/opentelemetry-demo))
 
 ### Testing
 - [x] load testing
-  - [x] simple-app
   - [x] hipster
 - [x] chaos testing
   - [x] [chaos-mesh](/chaosmesh/experiments/)
@@ -74,23 +52,43 @@ This repository is a playground for SRE and reliable monitoring setup for demo p
 
 ### 2. Execute the installtion script
 ```
-./install-e2e.sh
+./trigger-install.sh
 ```
 ### 3. To obtain UI access:
-```
-./port-fwd.sh
-```
-## Uninstallation Steps
-```
-./teardown.sh
-```
 
-
-## host file entries
+### Step 1: Add host file entries
 ```
+command: sudo vi /etc/hosts
+
+entries:
 127.0.0.1 demo.sre-playground.com
 127.0.0.1 grafana.sre-playground.com
 127.0.0.1 prometheus.sre-playground.com
 127.0.0.1 loadtest.sre-playground.com
 127.0.0.1 chaostest.sre-playground.com
+127.0.0.1 tracing.sre-playground.com
+```
+### Urls:
+demo.sre-playground.com
+grafana.sre-playground.com
+prometheus.sre-playground.com
+loadtest.sre-playground.com
+chaostest.sre-playground.com
+tracing.sre-playground.com
+
+## Reseting the cluster
+```
+./trigger-reset.sh
+(Note: Control plane components and CNI will not be deleted)
+```
+
+## Deleting the cluster
+```
+./trigger-teardown.sh
+```
+
+## Chaos Testing 
+```
+kubectl apply -f chaos-mesh/workflows/chaos-workflow.yaml
+kubectl apply -f chaos-mesh/experiments/pod-faults/container-kill.yaml
 ```
