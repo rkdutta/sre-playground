@@ -75,3 +75,28 @@ spec:
             port: 
               number: 80
     host: "grafana.sreplayground.local"
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    meta.helm.sh/release-name: cilium
+    meta.helm.sh/release-namespace: kube-system
+  labels:
+    app.kubernetes.io/name: hubble-ui
+    k8s-app: hubble-ui
+  name: hubble-ui
+  namespace: kube-system
+spec:
+  ingressClassName: nginx
+  rules:
+  - http:
+      paths:
+      - backend:
+          service:
+            name: hubble-ui
+            port:
+              name: http
+        path: /
+        pathType: Prefix
+    host: hubble.sreplayground.local

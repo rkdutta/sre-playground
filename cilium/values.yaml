@@ -2,7 +2,7 @@ USER-SUPPLIED VALUES:
 bpf:
   masquerade: true
 hubble:
-  enabled: false
+  enabled: true
   metrics:
     enabled:
     - dns
@@ -13,20 +13,18 @@ hubble:
     - icmp
     - http
   relay:
-    enabled: false
+    enabled: true
   tls:
     auto:
-      enabled: false
+      enabled: true
       method: helm
   ui:
-    enabled: false
+    enabled: true
     ingress:
       class: nginx
-      annotations:
-        kubernetes.io/ingress.class: nginx
       enabled: false
       hosts:
-        - hubble-ui.${LB_IP}.nip.io
+        - hubble.sreplayground.local
 image:
   pullPolicy: IfNotPresent
 ipMasqAgent:
