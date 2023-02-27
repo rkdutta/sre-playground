@@ -1,30 +1,24 @@
-ClusterName=sre-demo-site-control-plane
-EnableHubbleSwitch=$2
-namespace=$3
+#!/bin/bash
+set -eo pipefail
 
-# namespace=kube-system
-# ClusterName="sre-demo-site"
-# EnableHubbleSwitch=false
-
-#LB_IP=$(kubectl get svc -n ingress-nginx ingress-nginx-controller -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+app=${1:-"cilium"}
+namespace=${2:-"kube-system"}
+clusterName=${3:-"sre-demo-site"}
+selector=${4:-"nothing=specified"}
 
 #installing cilium
-helm repo add cilium https://helm.cilium.io/
+helm repo add $app https://helm.cilium.io/
 helm upgrade \
-    --install cilium cilium/cilium \
+    --install $app cilium/cilium \
     --namespace $namespace \
     --values values.yaml \
-    --set k8sServiceHost=$ClusterName
+    --set k8sServiceHost=$clusterName-control-plane
 
+
+   #LB_IP=$(kubectl get svc -n ingress-nginx ingress-nginx-controller -o jsonpath='{.status.loadBalancer.ingress[0].ip}') 
    # --set hubble.ui.enabled=$EnableHubbleSwitch \
    # --set hubble.ui.ingress.hosts[0]="hubble-ui.${LB_IP}.nip.io" \
 
-echo "`date` >>>>> wait for cilium to be ready"
-kubectl wait --namespace $namespace \
-                --for=condition=ready pod \
-                --selector=k8s-app=cilium \
-                --timeout=90s
-
 # verify Masquerading
-kubectl -n kube-system exec ds/cilium -- cilium status | grep Masquerading
+#kubectl -n kube-system exec ds/cilium -- cilium status | grep Masquerading
 
