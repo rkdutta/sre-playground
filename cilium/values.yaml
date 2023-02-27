@@ -1,0 +1,50 @@
+USER-SUPPLIED VALUES:
+bpf:
+  masquerade: true
+hubble:
+  enabled: false
+  metrics:
+    enabled:
+    - dns
+    - drop
+    - tcp
+    - flow
+    - port-distribution
+    - icmp
+    - http
+  relay:
+    enabled: false
+  tls:
+    auto:
+      enabled: false
+      method: helm
+  ui:
+    enabled: false
+    ingress:
+      class: nginx
+      annotations:
+        kubernetes.io/ingress.class: nginx
+      enabled: false
+      hosts:
+        - hubble-ui.${LB_IP}.nip.io
+image:
+  pullPolicy: IfNotPresent
+ipMasqAgent:
+  enabled: true
+ipam:
+  mode: kubernetes
+k8sServiceHost: sre-demo-site-control-plane
+k8sServicePort: 6443
+kubeProxyReplacement: strict
+operator:
+# -- Enable prometheus metrics for cilium-operator on the configured port at /metrics
+  prometheus:
+    enabled: true
+# -- Enable prometheus metrics for cilium-operator on the configured port at /metrics
+prometheus:
+  enabled: true
+# -- Cilium Ingress is disabled using nginx ingress controller. Cilium ingress controller 
+#    is no compatible with kind clusters
+ingressController:
+  enabled: false
+  loadbalancerMode: shared
