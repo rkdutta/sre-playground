@@ -84,3 +84,13 @@ This repository is a playground for SRE and reliable monitoring setup for demo p
 ```
 ./teardown.sh
 ```
+
+
+## host file entries
+```
+127.0.0.1 demo.sre-playground.com
+127.0.0.1 grafana.sre-playground.com
+127.0.0.1 prometheus.sre-playground.com
+127.0.0.1 loadtest.sre-playground.com
+127.0.0.1 chaostest.sre-playground.com
+```
