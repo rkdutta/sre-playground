@@ -39,13 +39,13 @@ components:
     enabled: true
 observability:
   grafana:
-    enabled: false # The demo is another grafana instance
+    enabled: false # The demo is using another grafana instance from prometheus community
   jaeger:
     enabled: true
   otelcol:
     enabled: true
   prometheus:
-    enabled: false # The demo is another prometheus instance
+    enabled: false # The demo is using another prometheus instance from prometheus community
 opentelemetry-collector:
   config:
     service:
