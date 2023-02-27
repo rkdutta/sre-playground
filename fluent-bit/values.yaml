@@ -1,6 +1,4 @@
 COMPUTED VALUES:
-image:
-  pullPolicy: Never
 logLevel: info
 metricsPort: 2020
 flush: 1

@@ -6,3 +6,8 @@ helm upgrade --install fluent-bit fluent/fluent-bit \
   --create-namespace \
   --values fluent-bit/values.yaml
 
+echo "`date` >>>>> wait for fluent-bit to be ready"
+kubectl wait --namespace fluent-bit \
+                --for=condition=ready pod \
+                --selector="app.kubernetes.io/instance=fluent-bit" \
+                --timeout=90s
