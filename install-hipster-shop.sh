@@ -1,5 +1,6 @@
 #!/bin/bash
 
+set 
 namespace="default"
 app="hipster-shop"
 selector="app.kubernetes.io/name=hipster-shop"

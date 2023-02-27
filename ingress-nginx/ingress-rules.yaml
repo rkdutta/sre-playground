@@ -15,7 +15,7 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: hipster-shop-frontendproxy
+            name: app-hipster-shop-frontendproxy
             port: 
               number: 8080
     host: "demo.sre-playground.com"
@@ -67,7 +67,7 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: hipster-shop-loadgenerator
+            name: app-hipster-shop-loadgenerator
             port: 
               number: 8089
     host: "loadtest.sre-playground.com"
@@ -92,3 +92,24 @@ spec:
             port: 
               number: 2333
     host: "chaostest.sre-playground.com"
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-jaeger
+  namespace: default
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx
+  rules:
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: app-hipster-shop-jaeger-query
+            port: 
+              number: 16686
+    host: "tracing.sre-playground.com"
