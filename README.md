@@ -68,17 +68,30 @@ entries:
 127.0.0.1 chaostest.sre-playground.com
 127.0.0.1 tracing.sre-playground.com
 ```
-### Urls:
+## URLs:
+### hipster playground UI
 [demo.sre-playground.com](http://demo.sre-playground.com/)
-
+### grafana UI
 [grafana.sre-playground.com](http://grafana.sre-playground.com/)
-
+```
+User ID: admin
+Password: prom-operator
+```
+### prometheus UI
 [prometheus.sre-playground.com](http://prometheus.sre-playground.com/)
-
+### loadtest UI
 [loadtest.sre-playground.com](http://loadtest.sre-playground.com/)
-
+### chaos-mesh UI
 [chaostest.sre-playground.com](http://chaostest.sre-playground.com/)
+```
+# Generate user access token
+ kubectl -n chaos-mesh create token chaos-dashboard
 
+# Trigger testing 
+kubectl apply -f chaos-mesh/workflows/chaos-workflow.yaml
+kubectl apply -f chaos-mesh/experiments/pod-faults/container-kill.yaml
+```
+### tracing tool: jaeger UI
 [tracing.sre-playground.com](http://tracing.sre-playground.com/)
 
 ## Reseting the cluster
@@ -90,10 +103,4 @@ entries:
 ## Deleting the cluster
 ```
 ./trigger-teardown.sh
-```
-
-## Chaos Testing 
-```
-kubectl apply -f chaos-mesh/workflows/chaos-workflow.yaml
-kubectl apply -f chaos-mesh/experiments/pod-faults/container-kill.yaml
 ```
