@@ -6,13 +6,27 @@
 
 clear
 
-USE_LOCAL_IMAGES=false
-FORCE_BUILD_IMAGES_LOCALLY=false
+waitForReadiness(){
+
+  local_app=$1
+  local_namespace=$2
+  local_selector=$3
+  echo "`date` >>>>> wait for $local_app to be ready"
+  kubectl wait --namespace $local_namespace \
+                --for=condition=ready pod \
+                --selector=$local_selector \
+                --timeout=90s
+}
+
+# DECLARING SCRIPT VARIABLES
+USE_LOCAL_IMAGES=true
+FORCE_BUILD_IMAGES_LOCALLY=true
 ClusterName="sre-demo-site"
 KIND_CONFIG_FILE="kind/kind-config-NoCNI.yaml"
 DEMO_DIR="opentelemetry-demo"
 RELEASE_VERSION="1.3.0"
 CONTAINER_REGISTRY="ghcr.io/open-telemetry/demo"
+
 DEMO_SERVICES=(
                 "accountingservice"
                 "adservice" 
@@ -49,23 +63,12 @@ if $FORCE_BUILD_IMAGES_LOCALLY ; then
     cd ..
   fi
 
-# Setting kubectl client context to the current cluster
-kubectl config use-context kind-$ClusterName
 
 #kind delete clusters sre-demo-site
 kind create cluster --config $KIND_CONFIG_FILE --name $ClusterName
 
 # Setting kubectl client context to the current cluster
 kubectl config use-context kind-$ClusterName
-
-
-# checking kubernetes status
-# until kubectl get sa default 2>&1 > /dev/null; do
-#   echo "Waiting for Kubernetes to start..."
-#   sleep 1
-# done
-# echo " `date` >>>>> kubernetes started..."
-# Checking if apiserver, etcd, controller-manager, scheduler is running
 
 echo "`date` >>>>> wait for controle-plane components to be ready"
 kubectl wait --namespace kube-system \
@@ -75,23 +78,18 @@ kubectl wait --namespace kube-system \
 
 
 # Install CNI: Cilium
+app="cilium"
+selector="k8s-app=cilium"
 EnableHubbleUISwitch=false
-sh install-cilium.sh $ClusterName $EnableHubbleUISwitch
-
-# verifying if coreDNS pods are up and running
-# until kubectl -n kube-system describe deployments.apps coredns | grep "0 unavailable"; do
-#   kubectl -n kube-system rollout restart deployment coredns
-#   echo "Waiting for coredns pods to start.."
-#   sleep 20
-# done
-# echo "`date` >>>>> coreDNS started..."
-# echo "`date` >>>>> cluster created successfully..."
+namespace="kube-system"
+(cd cilium && ./installer.sh $ClusterName $EnableHubbleUISwitch $namespace)
 
 echo "`date` >>>>> wait for kube-dns to be ready"
 kubectl wait --namespace kube-system \
   --for=condition=ready pod \
   --selector=k8s-app=kube-dns \
   --timeout=90s
+
 
 
 # transporting the locally build docker images to kind nodes
@@ -119,6 +117,10 @@ sh install-ingress.sh
 #install hipster application
 sh install-hipster-shop.sh
 
+#install chaos-mesh and execute
+(cd chaosmesh && ./installer.sh)
+
+#To Dos:
 # #install metallb
 # sh metallb/install-metalb.sh
 

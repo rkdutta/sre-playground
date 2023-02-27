@@ -1,14 +1,19 @@
-ClusterName=$1
+ClusterName=sre-demo-site-control-plane
 EnableHubbleSwitch=$2
+namespace=$3
 
+# namespace=kube-system
+# ClusterName="sre-demo-site"
+# EnableHubbleSwitch=false
 
 #LB_IP=$(kubectl get svc -n ingress-nginx ingress-nginx-controller -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
 
+#installing cilium
 helm repo add cilium https://helm.cilium.io/
 helm upgrade \
     --install cilium cilium/cilium \
     --namespace $namespace \
-    --values cilium/values.yaml \
+    --values values.yaml \
     --set k8sServiceHost=$ClusterName
 
    # --set hubble.ui.enabled=$EnableHubbleSwitch \
