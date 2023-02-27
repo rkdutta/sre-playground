@@ -70,10 +70,15 @@ entries:
 ```
 ### Urls:
 [demo.sre-playground.com](demo.sre-playground.com)
+
 [grafana.sre-playground.com](grafana.sre-playground.com)
+
 [prometheus.sre-playground.com](prometheus.sre-playground.com)
+
 [loadtest.sre-playground.com](loadtest.sre-playground.com)
+
 [chaostest.sre-playground.com](chaostest.sre-playground.com)
+
 [tracing.sre-playground.com](tracing.sre-playground.com)
 
 ## Reseting the cluster
