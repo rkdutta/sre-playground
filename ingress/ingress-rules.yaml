@@ -71,3 +71,24 @@ spec:
             port: 
               number: 8089
     host: "loadtest.sre-playground.com"
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-chaos-dashboard
+  namespace: chaos-mesh
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx
+  rules:
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: chaos-dashboard
+            port: 
+              number: 2333
+    host: "chaostest.sre-playground.com"

@@ -25,6 +25,3 @@ roleRef:
   kind: ClusterRole
   name: role-cluster-manager
   apiGroup: rbac.authorization.k8s.io
-
----
-# kubectl -n chaos-mesh create token chaos-dashboard
