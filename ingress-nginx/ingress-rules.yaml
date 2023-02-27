@@ -4,11 +4,10 @@ kind: Ingress
 metadata:
   name: ingress-hipstershop
   namespace: default
-  annotations:
-    nginx.ingress.kubernetes.io/use-regex: "true"
 spec:
   ingressClassName: nginx
   rules:
+    # works for app, loadgen, jaeger
   - http:
       paths:
       - path: /
@@ -23,62 +22,8 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: ingress-prometheus
-  namespace: prometheus
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
-spec:
-  ingressClassName: nginx
-  rules:
-  - http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: prometheus-operated
-            port: 
-              number: 9090
-    host: "prometheus.sreplayground.local"
-  - http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: prometheus-grafana
-            port: 
-              number: 80
-    host: "grafana.sreplayground.local"
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: ingress-loadtesting
-  namespace: default
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
-spec:
-  ingressClassName: nginx
-  rules:
-  - http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: app-hipster-shop-loadgenerator
-            port: 
-              number: 8089
-    host: "loadgen.sreplayground.local"
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
   name: ingress-chaos-dashboard
   namespace: chaos-mesh
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   ingressClassName: nginx
   rules:
@@ -96,10 +41,8 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: ingress-jaeger
-  namespace: default
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
+  name: ingress-prometheus
+  namespace: prometheus
 spec:
   ingressClassName: nginx
   rules:
@@ -109,7 +52,26 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: app-hipster-shop-jaeger-query
+            name: prometheus-operated
             port: 
-              number: 16686
-    host: "tracing.sreplayground.local"
+              number: 9090
+    host: "prometheus.sreplayground.local"
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-grafana
+  namespace: prometheus
+spec:
+  ingressClassName: nginx
+  rules:
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: prometheus-grafana
+            port: 
+              number: 80
+    host: "grafana.sreplayground.local"
