@@ -62,9 +62,7 @@ entries:
 127.0.0.1 demo.sreplayground.local
 127.0.0.1 grafana.sreplayground.local
 127.0.0.1 prometheus.sreplayground.local
-127.0.0.1 loadgen.sreplayground.local
 127.0.0.1 chaostest.sreplayground.local
-127.0.0.1 tracing.sreplayground.local
 ```
 
 ### 2. Clone the repo in local
@@ -89,7 +87,9 @@ Password: prom-operator
 ### prometheus UI
 [prometheus.sreplayground.local](http://prometheus.sreplayground.local/)
 ### loadtest UI
-[loadgen.sreplayground.local](http://loadgen.sreplayground.local/)
+[demo.sreplayground.local/loadgen/](http://demo.sreplayground.local/loadgen/)
+### tracing: jaeger UI
+[demo.sreplayground.local/jaeger/](http://demo.sreplayground.local/jaeger/ui/)
 ### chaos-mesh UI
 [chaostest.sreplayground.local](http://chaostest.sreplayground.local/)
 ```
