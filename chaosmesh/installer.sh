@@ -19,10 +19,10 @@ kubectl wait --namespace $namespace \
                 --timeout=90s
 
 #Executing chaos experiment workflow:
-kubectl apply -f chaosmesh/workflows/chaos-workflow.yaml
+kubectl apply -f workflows/chaos-workflow.yaml
 
 # create permissions for the dashboard user
-kubectl apply -f chaosmesh/permissions.yaml
+kubectl apply -f permissions.yaml
 
 # generate token for the dashboard user
 echo && echo
