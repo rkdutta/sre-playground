@@ -69,12 +69,12 @@ entries:
 127.0.0.1 tracing.sre-playground.com
 ```
 ### Urls:
-(demo.sre-playground.com)[demo.sre-playground.com]
-(grafana.sre-playground.com)[grafana.sre-playground.com]
-(prometheus.sre-playground.com)[prometheus.sre-playground.com]
-(loadtest.sre-playground.com)[loadtest.sre-playground.com]
-(chaostest.sre-playground.com)[chaostest.sre-playground.com]
-(tracing.sre-playground.com)[tracing.sre-playground.com]
+[demo.sre-playground.com](demo.sre-playground.com)
+[grafana.sre-playground.com](grafana.sre-playground.com)
+[prometheus.sre-playground.com](prometheus.sre-playground.com)
+[loadtest.sre-playground.com](loadtest.sre-playground.com)
+[chaostest.sre-playground.com](chaostest.sre-playground.com)
+[tracing.sre-playground.com](tracing.sre-playground.com)
 
 ## Reseting the cluster
 ```
