@@ -43,46 +43,55 @@ E2E solution runs in local on k8 clusters provisioned with kind.
 <img width="1419" alt="image" src="https://user-images.githubusercontent.com/49343621/200201656-b82a4d02-23a1-4122-b4fe-efbe81a87dca.png">
 
 
-## Installation Steps
+## Installation
 
-### 1. Clone the repo in local
+### 1. Seting up DNS
+
+There are two options here. First using [DNSMASQ](https://thekelleys.org.uk/dnsmasq/doc.html) for DNS resolution. It helps in avoiding host file entries update. Or you can use traditional ways of updating hostfile entries.
+
+#### Option 1.1: Install and configure DNSMASQ
+```
+  # The script installs dnsmasq and registers a local dns server "sreplayground.local"
+  ./dns/setup.sh
+```
+
+#### Option 1.2: Add host file entries
+```
+command: sudo vi /etc/hosts
+entries:
+127.0.0.1 demo.sreplayground.local
+127.0.0.1 grafana.sreplayground.local
+127.0.0.1 prometheus.sreplayground.local
+127.0.0.1 loadgen.sreplayground.local
+127.0.0.1 chaostest.sreplayground.local
+127.0.0.1 tracing.sreplayground.local
+```
+
+### 2. Clone the repo in local
 ```
   git clone 
 ```
 
-### 2. Execute the installtion script
+### 3. Execute the installtion script
 ```
 ./trigger-install.sh
 ```
-### 3. To obtain UI access:
+### 4. Accessing the sites:
 
-### Step 1: Add host file entries
-```
-command: sudo vi /etc/hosts
-
-entries:
-127.0.0.1 demo.sre-playground.com
-127.0.0.1 grafana.sre-playground.com
-127.0.0.1 prometheus.sre-playground.com
-127.0.0.1 loadtest.sre-playground.com
-127.0.0.1 chaostest.sre-playground.com
-127.0.0.1 tracing.sre-playground.com
-```
-## URLs:
 ### hipster playground UI
-[demo.sre-playground.com](http://demo.sre-playground.com/)
+[demo.sreplayground.local](http://demo.sreplayground.local/)
 ### grafana UI
-[grafana.sre-playground.com](http://grafana.sre-playground.com/)
+[grafana.sreplayground.local](http://grafana.sreplayground.local/)
 ```
 User ID: admin
 Password: prom-operator
 ```
 ### prometheus UI
-[prometheus.sre-playground.com](http://prometheus.sre-playground.com/)
+[prometheus.sreplayground.local](http://prometheus.sreplayground.local/)
 ### loadtest UI
-[loadtest.sre-playground.com](http://loadtest.sre-playground.com/)
+[loadgen.sreplayground.local](http://loadgen.sreplayground.local/)
 ### chaos-mesh UI
-[chaostest.sre-playground.com](http://chaostest.sre-playground.com/)
+[chaostest.sreplayground.local](http://chaostest.sreplayground.local/)
 ```
 # Generate user access token
  kubectl -n chaos-mesh create token chaos-dashboard
@@ -92,15 +101,15 @@ kubectl apply -f chaos-mesh/workflows/chaos-workflow.yaml
 kubectl apply -f chaos-mesh/experiments/pod-faults/container-kill.yaml
 ```
 ### tracing tool: jaeger UI
-[tracing.sre-playground.com](http://tracing.sre-playground.com/)
+[tracing.sreplayground.local](http://tracing.sreplayground.local/)
 
-## Reseting the cluster
+### 5. Reseting the cluster
 ```
 ./trigger-reset.sh
 (Note: Control plane components and CNI will not be deleted)
 ```
 
-## Deleting the cluster
+### 6. Deleting the cluster
 ```
 ./trigger-teardown.sh
 ```
