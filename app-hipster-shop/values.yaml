@@ -19,6 +19,31 @@ components:
     enabled: true
   frontend:
     enabled: true
+    env:
+    - name: FRONTEND_ADDR
+      value: :8080
+    - name: AD_SERVICE_ADDR
+      value: '{{ include "otel-demo.name" . }}-adservice:8080'
+    - name: CART_SERVICE_ADDR
+      value: '{{ include "otel-demo.name" . }}-cartservice:8080'
+    - name: CHECKOUT_SERVICE_ADDR
+      value: '{{ include "otel-demo.name" . }}-checkoutservice:8080'
+    - name: CURRENCY_SERVICE_ADDR
+      value: '{{ include "otel-demo.name" . }}-currencyservice:8080'
+    - name: PRODUCT_CATALOG_SERVICE_ADDR
+      value: '{{ include "otel-demo.name" . }}-productcatalogservice:8080'
+    - name: RECOMMENDATION_SERVICE_ADDR
+      value: '{{ include "otel-demo.name" . }}-recommendationservice:8080'
+    - name: SHIPPING_SERVICE_ADDR
+      value: '{{ include "otel-demo.name" . }}-shippingservice:8080'
+    - name: OTEL_EXPORTER_OTLP_ENDPOINT
+      value: http://$(OTEL_COLLECTOR_NAME):4317
+    - name: WEB_OTEL_SERVICE_NAME
+      value: frontend-web
+    - name: FRONTEND_PORT
+      value: "8080"
+    - name: PUBLIC_OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
+      value: http://otel.sreplayground.local/v1/traces
   frontendProxy:
     enabled: true
   kafka:
