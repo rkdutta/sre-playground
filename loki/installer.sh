@@ -10,5 +10,6 @@ helm repo add $app https://grafana.github.io/helm-charts
 helm upgrade --install $app loki/loki-stack \
   --namespace=$namespace \
   --create-namespace \
-  --values values.yaml 
+  --values values.yaml \
+  --version "2.9.9"
 

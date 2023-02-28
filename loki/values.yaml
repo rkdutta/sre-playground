@@ -2,6 +2,8 @@ loki:
   enabled: true
   isDefault: true
   url: http://{{(include "loki.serviceName" .)}}:{{ .Values.loki.service.port }}
+  image:
+    tag: "2.6.1"
 prometheus:
   enabled: false
 filebeat:
