@@ -61,10 +61,12 @@ DEMO_SERVICES=(
 
 #download or sync the opentelemtry-demo repository
 if [ -d $DEMO_DIR ]; then
-  git --work-tree=$DEMO_DIR --git-dir=$DEMO_DIR/.git pull origin main
+  git --work-tree=$DEMO_DIR --git-dir=$DEMO_DIR/.git checkout $RELEASE_VERSION
 else
   if $USE_LOCAL_IMAGES ; then
     git clone https://github.com/open-telemetry/opentelemetry-demo.git
+    git fetch --all --tags
+    git checkout $RELEASE_VERSION
   fi
 fi
 
