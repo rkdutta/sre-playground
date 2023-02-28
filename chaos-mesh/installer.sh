@@ -7,7 +7,7 @@ clusterName=${3:-"sre-demo-site"}
 
 #installing
 helm repo add $app https://charts.chaos-mesh.org
-helm upgrade --install $app chaos-mesh/chaos-mesh \
+helm upgrade --install $app $app/chaos-mesh \
   --namespace=$namespace \
   --create-namespace \
   --version "2.5.1" \

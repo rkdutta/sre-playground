@@ -7,7 +7,7 @@ clusterName=${3:-"sre-demo-site"}
 
 #installing
 helm repo add $app https://open-telemetry.github.io/opentelemetry-helm-charts
-helm upgrade --install $app open-telemetry/opentelemetry-demo \
+helm upgrade --install $app $app/opentelemetry-demo \
   --namespace=$namespace \
   --create-namespace \
   --values values.yaml \
