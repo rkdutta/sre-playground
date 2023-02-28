@@ -34,10 +34,17 @@ installer(){
 USE_LOCAL_IMAGES=false
 FORCE_BUILD_IMAGES_LOCALLY=false
 clusterName="sre-demo-site"
-KIND_CONFIG_FILE="kind/kind-config-NoCNI.yaml"
+ENABLE_KUBE_PROXY=false
+
 DEMO_DIR="opentelemetry-demo"
 RELEASE_VERSION="1.3.0"
 CONTAINER_REGISTRY="ghcr.io/open-telemetry/demo"
+
+if $ENABLE_KUBE_PROXY ; then
+  KIND_CONFIG_FILE="kind/kind-config-enable-kube-proxy.yaml"
+else
+  KIND_CONFIG_FILE="kind/kind-config-disable-kube-proxy.yaml"
+fi
 
 DEMO_SERVICES=(
                 "accountingservice"
@@ -91,12 +98,14 @@ selector="tier=control-plane"
 namespace="kube-system"
 waitForReadiness $app $namespace $selector
 
-# Install CNI: Cilium
-app="cilium"
-selector="k8s-app=cilium"
-namespace="kube-system"
-installer $app $namespace $clusterName $selector
 
+if ! $ENABLE_KUBE_PROXY ; then
+  # Install CNI: Cilium
+  app="cilium"
+  selector="k8s-app=cilium"
+  namespace="kube-system"
+  installer $app $namespace $clusterName $selector
+fi
 
 # verifying cluster installation 
 app="kube-dns"
