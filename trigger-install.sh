@@ -31,8 +31,8 @@ installer(){
 }
 
 # DECLARING SCRIPT VARIABLES
-USE_LOCAL_IMAGES=true
-FORCE_BUILD_IMAGES_LOCALLY=true
+USE_LOCAL_IMAGES=false
+FORCE_BUILD_IMAGES_LOCALLY=false
 clusterName="sre-demo-site"
 KIND_CONFIG_FILE="kind/kind-config-NoCNI.yaml"
 DEMO_DIR="opentelemetry-demo"
@@ -60,11 +60,11 @@ DEMO_SERVICES=(
               )
 
 #download or sync the opentelemtry-demo repository
-if [ -d $DEMO_DIR ]; then
-  git --work-tree=$DEMO_DIR --git-dir=$DEMO_DIR/.git checkout $RELEASE_VERSION
-  git pull
-else
-  if $USE_LOCAL_IMAGES ; then
+if $USE_LOCAL_IMAGES ; then
+  if [ -d $DEMO_DIR ]; then
+    git --work-tree=$DEMO_DIR --git-dir=$DEMO_DIR/.git checkout $RELEASE_VERSION
+    git pull
+  else  
     git clone https://github.com/open-telemetry/opentelemetry-demo.git
     git fetch --all --tags
     git checkout $RELEASE_VERSION
