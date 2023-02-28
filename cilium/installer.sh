@@ -12,13 +12,6 @@ helm upgrade \
     --install $app cilium/cilium \
     --namespace $namespace \
     --values values.yaml \
-    --set k8sServiceHost=$clusterName-control-plane
-
-
-   #LB_IP=$(kubectl get svc -n ingress-nginx ingress-nginx-controller -o jsonpath='{.status.loadBalancer.ingress[0].ip}') 
-   # --set hubble.ui.enabled=$EnableHubbleSwitch \
-   # --set hubble.ui.ingress.hosts[0]="hubble-ui.${LB_IP}.nip.io" \
-
-# verify Masquerading
-#kubectl -n kube-system exec ds/cilium -- cilium status | grep Masquerading
+    --set k8sServiceHost=$clusterName-control-plane \
+    --version 1.13.0
 
