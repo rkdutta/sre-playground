@@ -10,7 +10,8 @@ helm repo add $app https://charts.chaos-mesh.org
 helm upgrade --install $app chaos-mesh/chaos-mesh \
   --namespace=$namespace \
   --create-namespace \
-  --version 2.5.1 \
+  --version "2.5.1" \
+  --values values.yaml \
   --set chaosDaemon.runtime=containerd \
   --set chaosDaemon.socketPath=/run/containerd/containerd.sock   # Default to /var/run/docker.sock
 
