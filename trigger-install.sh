@@ -113,6 +113,12 @@ if ! $ENABLE_KUBE_PROXY ; then
   selector="k8s-app=cilium"
   namespace="kube-system"
   installer $app $namespace $CLUSTER_NAME $selector
+  else
+  # verify deefault CNI installation
+  app="cni-kindnet"
+  selector="app=kindnet"
+  namespace="kube-system"
+  waitForReadiness $app $namespace $selector
 fi
 
 # verifying cluster installation 
