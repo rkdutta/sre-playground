@@ -28,8 +28,7 @@ hubble:
       enabled: false
       hosts:
         - hubble.sreplayground.local
-image:
-  pullPolicy: IfNotPresent
+
 ipMasqAgent:
   enabled: true
 ipam:
