@@ -9,4 +9,5 @@ helm repo add $app https://fluent.github.io/helm-charts
 helm upgrade --install $app fluent/fluent-bit \
   --namespace=$namespace \
   --create-namespace \
-  --values values.yaml
+  --values values.yaml \
+  --version 0.24.0
