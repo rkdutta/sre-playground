@@ -34,7 +34,7 @@ installer(){
 USE_LOCAL_IMAGES=false
 FORCE_BUILD_IMAGES_LOCALLY=false
 clusterName="sre-demo-site"
-ENABLE_KUBE_PROXY=false
+ENABLE_KUBE_PROXY=true
 
 DEMO_DIR="opentelemetry-demo"
 RELEASE_VERSION="1.3.0"
