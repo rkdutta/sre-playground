@@ -7,7 +7,7 @@ clusterName=${3:-"sre-demo-site"}
 
 #installing
 helm repo add $app https://prometheus-community.github.io/helm-charts
-helm upgrade --install $app prometheus-community/kube-prometheus-stack \
+helm upgrade --install $app $app/kube-prometheus-stack \
   --namespace=$namespace \
   --create-namespace \
   --values values.yaml \
