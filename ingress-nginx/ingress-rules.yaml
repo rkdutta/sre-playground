@@ -100,3 +100,24 @@ spec:
         path: /
         pathType: Prefix
     host: hubble.sreplayground.local
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  labels:
+    k8s-app: otel
+  name: ingress-browser-tracing
+  namespace: default
+spec:
+  ingressClassName: nginx
+  rules:
+  - http:
+      paths:
+      - backend:
+          service:
+            name: app-hipster-shop-otelcol
+            port:
+              number: 4318
+        path: /v1/traces
+        pathType: Prefix
+    host: otel.sreplayground.local
