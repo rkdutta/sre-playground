@@ -1,4 +1,10 @@
+alertmanager:
+  alertmanagerSpec:
+    image:
+      tag: v0.25.0
 grafana:
+  image:
+    tag: "9.3.6"
   adminPassword: prom-operator
   adminUser: admin
   additionalDataSources:
@@ -24,9 +30,17 @@ grafana:
 nodeExporter:
   enabled: true
 prometheus:
+  image:
+    tag: "v2.42.0"
   prometheusSpec:
     additionalScrapeConfigs:
     - job_name: opentelemetry-community-demo
       static_configs:
       - targets:
         - 'app-hipster-shop-otelcol.default.svc:9464'
+kube-state-metrics:
+  image:
+    tag: "v2.8.0"
+prometheusOperator:
+  image:
+    tag: "v0.63.0"

@@ -10,4 +10,5 @@ helm repo add $app https://prometheus-community.github.io/helm-charts
 helm upgrade --install $app prometheus-community/kube-prometheus-stack \
   --namespace=$namespace \
   --create-namespace \
-  --values values.yaml 
+  --values values.yaml \
+  --version "45.3.0"
