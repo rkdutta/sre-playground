@@ -24,7 +24,7 @@ E2E solution runs in local k8 clusters provisioned with kind.
     - [ ] without kube-proxy
 - [x] Loki
 ### Traces
-- [ ] OpenTelemetry -> Jaeger
+- [ ] OpenTelemetry :arrow_right: Jaeger
   - [x] workload traces
   - [ ] kubernetes controleplane traces
 ### Metrics
