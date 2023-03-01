@@ -15,9 +15,6 @@ E2E solution runs in local k8 clusters provisioned with kind.
       - [x] arm64 (apple mac m1 chips)
 ### Demo Application
 - [x] [hipster](/apps/hipster-shop-app/) ([chart-source](https://github.com/open-telemetry/opentelemetry-demo))
-- [x] simple-app (two spring-boot microservices) 
-  - [x] [frontend api](https://github.com/rkdutta/otel-demo-api-service)
-  - [x] [backend api](https://github.com/rkdutta/otel-demo-customer-service)
 ### Logging
 - [x] fluent-bit :arrow_right: Loki
     - [x] with kube-proxy
