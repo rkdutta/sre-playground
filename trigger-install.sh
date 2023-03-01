@@ -180,9 +180,8 @@ installer $app $namespace $CLUSTER_NAME $selector
 selector="app.kubernetes.io/component=chaos-daemon"
 waitForReadiness $app $namespace $selector
 
-#To Dos:
-# #install metallb
-# sh metallb/install-metalb.sh
+#install metallb
+( cd metallb &&  ./installer.sh )
 
 # # Install CNI: Enable Hubble ui
 # EnableHubbleUISwitch=false
@@ -190,7 +189,6 @@ waitForReadiness $app $namespace $selector
 
 
 #install ingress controller
-# sh install-ingress.sh
 app="ingress-nginx"
 selector="app.kubernetes.io/component=controller"
 namespace="ingress-nginx"
