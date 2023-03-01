@@ -17,9 +17,9 @@ echo $METALLB_IP_RANGE
 helm repo add $app https://metallb.github.io/metallb
 helm upgrade --install $app $app/metallb \
   --namespace=$namespace \
-  --create-namespace 
-  # --values values.yaml \
-  # --version 0.16.2
+  --create-namespace \
+  --values values.yaml \
+  --version 0.13.9
 
 # ToDo: for eBPF
 #kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.7/config/manifests/metallb-native.yaml
