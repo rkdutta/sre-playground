@@ -172,14 +172,6 @@ namespace="default"
 installer $app $namespace $CLUSTER_NAME $selector
 
 
-#install chaos-mesh and execute
-app="chaos-mesh"
-selector="app.kubernetes.io/instance=chaos-mesh"
-namespace="chaos-mesh"
-installer $app $namespace $CLUSTER_NAME $selector
-selector="app.kubernetes.io/component=chaos-daemon"
-waitForReadiness $app $namespace $selector
-
 #install metallb
 ( cd metallb &&  ./installer.sh )
 
@@ -193,6 +185,15 @@ app="ingress"
 selector="app.kubernetes.io/component=controller"
 namespace="ingress"
 installer $app $namespace $CLUSTER_NAME $selector
+
+
+#install chaos-mesh and execute
+app="chaos-mesh"
+selector="app.kubernetes.io/instance=chaos-mesh"
+namespace="chaos-mesh"
+installer $app $namespace $CLUSTER_NAME $selector
+selector="app.kubernetes.io/component=chaos-daemon"
+waitForReadiness $app $namespace $selector
 
 
 echo "SUCCESS.."
