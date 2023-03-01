@@ -19,7 +19,7 @@ E2E solution runs in local k8 clusters provisioned with kind.
   - [x] [frontend api](https://github.com/rkdutta/otel-demo-api-service)
   - [x] [backend api](https://github.com/rkdutta/otel-demo-customer-service)
 ### Logging
-- [x] fluent-bit -> Loki
+- [x] fluent-bit :arrow_right: Loki
     - [x] with kube-proxy
     - [ ] without kube-proxy
 - [x] Loki
