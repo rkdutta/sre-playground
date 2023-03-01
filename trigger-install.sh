@@ -189,9 +189,9 @@ waitForReadiness $app $namespace $selector
 
 
 #install ingress controller
-app="ingress-nginx"
+app="ingress"
 selector="app.kubernetes.io/component=controller"
-namespace="ingress-nginx"
+namespace="ingress"
 installer $app $namespace $CLUSTER_NAME $selector
 
 
