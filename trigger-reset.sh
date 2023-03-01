@@ -19,5 +19,5 @@ do
     fi
 done
 
-kubectl delete -f ingress-nginx/ingress-rules.yaml
-kubectl delete -f ingress-nginx/nginx-ingress-def.yaml
+kubectl delete -f ingress/ingress-rules.yaml
+kubectl delete -f ingress/nginx-ingress-def.yaml

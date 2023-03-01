@@ -10,4 +10,3 @@ opentelemetry-demo
 opentelemetry/
 nohup.out
 istio-*/
-metallb/

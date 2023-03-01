@@ -1,24 +1,48 @@
 # SRE-Playground
 
-## Background
 This repository is a playground for SRE and reliable monitoring setup for demo purpose. 
-E2E solution runs in local on k8 clusters provisioned with kind.
+E2E solution runs in local k8 clusters provisioned with kind.
 
-
-## Tools requirement
-```
-1. Docker
-2. Kind
-
-```
-
-### Application
+# Features
+### Kubernetes Cluster
+- [x] kind
+  - [x] with kube-proxy
+    - [x] x86_64
+    - [x] arm64 (apple mac m1 chips)
+  - [x] without kube-proxy
+    - [ ] cilium/eBPF
+      - [ ] x86_64
+      - [x] arm64 (apple mac m1 chips)
+### Demo Application
 - [x] [hipster](/apps/hipster-shop-app/) ([chart-source](https://github.com/open-telemetry/opentelemetry-demo))
-
+### Logging
+- [x] fluent-bit :arrow_right: Loki
+    - [x] with kube-proxy
+    - [ ] without kube-proxy
+- [x] Loki
+### Traces
+- [ ] OpenTelemetry :arrow_right: Jaeger
+  - [x] workload traces
+  - [ ] kubernetes controleplane traces
+### Metrics
+- [x] Prometheus
+  - [x] kubernetes components metrics
+  - [x] workload metrics
+  - [x] node metrics
+### Ingress
+- [x] nginx-ingress
+  - [x] with kube-proxy
+  - [ ] without kube-proxy
+- [ ] cilium
+  - [ ] with kube-proxy
+  - [x] without kube-proxy
+### Loadbalancer
+- [x] Metallb
 ### Testing
 - [x] load testing
   - [x] hipster
 - [x] chaos testing
+  - [ ] gremlin
   - [x] [chaos-mesh](/chaosmesh/experiments/)
     - [x] hipster
       - [x] [network-faults](/chaosmesh/experiments/network-faults/)
@@ -31,23 +55,30 @@ E2E solution runs in local on k8 clusters provisioned with kind.
         - [x] pod kill
       - [x] [stress-conditions](/chaosmesh/experiments/stress-conditions/)
         - [x] cpu stress
-        - [x] memory stress
-    - [ ] simple-app   
+        - [x] memory stress  
 
-
-## Golden signal correlation 
+### Golden signal correlation 
 <img width="1441" alt="image" src="https://user-images.githubusercontent.com/49343621/200201465-6b71783e-2003-4051-853e-83ee68e7211d.png">
 
 
-## Easy Navigation from Log > Traces
+### Navigation from Logs to Traces
 <img width="1419" alt="image" src="https://user-images.githubusercontent.com/49343621/200201656-b82a4d02-23a1-4122-b4fe-efbe81a87dca.png">
 
 
-## Installation
+# Tools & software requirement
+```
+1. Docker
+2. Kind
+3. kubectl
+4. helm
+```
+
+
+# Installation
 
 ### 1. Seting up DNS
 
-There are two options here. First using [DNSMASQ](https://thekelleys.org.uk/dnsmasq/doc.html) for DNS resolution. It helps in avoiding host file entries update. Or you can use traditional ways of updating hostfile entries.
+There are two options here (Option 1.1 & 1.2). First using [DNSMASQ](https://thekelleys.org.uk/dnsmasq/doc.html) for DNS resolution. It helps in avoiding host file entries update. Or you can use traditional ways of updating hostfile entries.
 
 #### Option 1.1: Install and configure DNSMASQ
 ```
@@ -67,30 +98,31 @@ entries:
 
 ### 2. Clone the repo in local
 ```
-  git clone 
+  git clone https://github.com/rkdutta/sre-playground.git
 ```
 
 ### 3. Execute the installtion script
 ```
 ./trigger-install.sh
 ```
-### 4. Accessing the sites:
 
-### hipster playground UI
+
+# UI Access
+## hipster playground
 [demo.sreplayground.local](http://demo.sreplayground.local/)
-### grafana UI
+## grafana
 [grafana.sreplayground.local](http://grafana.sreplayground.local/)
 ```
 User ID: admin
 Password: prom-operator
 ```
-### prometheus UI
+## prometheus
 [prometheus.sreplayground.local](http://prometheus.sreplayground.local/)
-### loadtest UI
+## loadtest
 [demo.sreplayground.local/loadgen/](http://demo.sreplayground.local/loadgen/)
-### tracing: jaeger UI
+## tracing: jaeger
 [demo.sreplayground.local/jaeger/](http://demo.sreplayground.local/jaeger/ui/)
-### chaos-mesh UI
+## chaos-mesh
 [chaostest.sreplayground.local](http://chaostest.sreplayground.local/)
 ```
 # Generate user access token
@@ -100,16 +132,15 @@ Password: prom-operator
 kubectl apply -f chaos-mesh/workflows/chaos-workflow.yaml
 kubectl apply -f chaos-mesh/experiments/pod-faults/container-kill.yaml
 ```
-### tracing tool: jaeger UI
-[tracing.sreplayground.local](http://tracing.sreplayground.local/)
 
-### 5. Reseting the cluster
+
+# Reseting the cluster
 ```
 ./trigger-reset.sh
 (Note: Control plane components and CNI will not be deleted)
 ```
 
-### 6. Deleting the cluster
+# Deleting the cluster
 ```
 ./trigger-teardown.sh
 ```
