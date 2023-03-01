@@ -29,6 +29,15 @@ E2E solution runs in local k8 clusters provisioned with kind.
   - [x] kubernetes components metrics
   - [x] workload metrics
   - [x] node metrics
+### Ingress
+- [x] nginx-ingress
+  - [x] with kube-proxy
+  - [ ] without kube-proxy
+- [ ] cilium
+  - [ ] with kube-proxy
+  - [x] without kube-proxy
+### Loadbalancer
+- [x] Metallb
 ### Testing
 - [x] load testing
   - [x] hipster
