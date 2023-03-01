@@ -182,7 +182,7 @@ installer $app $namespace $CLUSTER_NAME $selector
 
 #install ingress controller
 app="ingress"
-selector="app.kubernetes.io/component=controller"
+selector="app=ingress-nginx-ingress"
 namespace="ingress"
 installer $app $namespace $CLUSTER_NAME $selector
 
