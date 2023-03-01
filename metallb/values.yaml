@@ -1,7 +1,7 @@
 COMPUTED VALUES:
 controller:
   image:
-    tag: "0.13.9"
+    tag: "v0.13.9"
 speaker:
   image:
-    tag: "0.13.9"
+    tag: "v0.13.9"
