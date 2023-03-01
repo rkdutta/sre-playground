@@ -24,6 +24,7 @@ helm upgrade --install $app $app/metallb \
 # ToDo: for eBPF
 #kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.7/config/manifests/metallb-native.yaml
 
+echo "`date` >>>>> wait for $app to be ready"
 kubectl wait --namespace $namespace \
                 --for=condition=ready pod \
                 --selector=$selector \
