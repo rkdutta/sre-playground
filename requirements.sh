@@ -58,6 +58,6 @@ brew install derailed/k9s/k9s
 
 # troubleshooting step
 # https://www.suse.com/support/kb/doc/?id=000020048
-sudo sysctl fs.inotify.max_user_instances=8192
-sudo sysctl fs.inotify.max_user_watches=524288
+sudo echo "sysctl fs.inotify.max_user_instances=8192" >> /etc/sysctl.conf 
+sudo echo "fs.inotify.max_user_watches=524288" >> /etc/sysctl.conf
 sudo sysctl -p
