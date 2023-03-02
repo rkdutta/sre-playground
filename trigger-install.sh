@@ -196,4 +196,7 @@ selector="app.kubernetes.io/component=chaos-daemon"
 waitForReadiness $app $namespace $selector
 
 
+# Apply the ingress rules
+kubectl apply -f ingress/ingress-rules.yaml
+
 echo "SUCCESS.."

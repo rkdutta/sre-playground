@@ -11,6 +11,3 @@ helm upgrade --install $app $app/nginx-ingress \
   --create-namespace \
   --values values.yaml \
   --version 0.16.2
-
-# install the ingress rules
-kubectl apply -f ingress-rules.yaml
