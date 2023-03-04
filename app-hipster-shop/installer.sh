@@ -5,6 +5,13 @@ app=${1:-"app-hipster-shop"}
 namespace=${2:-"default"}
 clusterName=${3:-"sre-demo-site"}
 
+indexFile="index.html"
+#indexFile="index-local.html"
+
+kubectl -n $namespace delete configmap dark-index-page
+kubectl -n $namespace create configmap dark-index-page --from-file=index.html=$indexFile
+kubectl -n $namespace apply -f deploy-index-page.yaml
+
 #installing
 helm repo add $app https://open-telemetry.github.io/opentelemetry-helm-charts
 helm upgrade --install $app $app/opentelemetry-demo \
