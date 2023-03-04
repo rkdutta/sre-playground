@@ -4,10 +4,12 @@ kind: Ingress
 metadata:
   name: ingress-hipstershop
   namespace: default
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   ingressClassName: nginx
   rules:
-    # works for app, loadgen, jaeger
   - http:
       paths:
       - path: /
@@ -17,7 +19,27 @@ spec:
             name: app-hipster-shop-frontendproxy
             port: 
               number: 8080
-    host: "demo.sreplayground.local"
+    host: "demo.sre-playground.devops.nakednerds.net"
+  - http:
+      paths:
+      - backend:
+          service:
+            name: app-hipster-shop-otelcol
+            port:
+              number: 4318
+        path: /v1/traces
+        pathType: Prefix
+    host: "otel.sre-playground.devops.nakednerds.net"
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: dark-index-page
+            port: 
+              number: 8080
+    host: "sre-playground.devops.nakednerds.net"
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -36,45 +58,7 @@ spec:
             name: chaos-dashboard
             port: 
               number: 2333
-    host: "chaostest.sreplayground.local"
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: ingress-prometheus
-  namespace: prometheus
-spec:
-  ingressClassName: nginx
-  rules:
-  - http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: prometheus-operated
-            port: 
-              number: 9090
-    host: "prometheus.sreplayground.local"
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: ingress-grafana
-  namespace: prometheus
-spec:
-  ingressClassName: nginx
-  rules:
-  - http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: prometheus-grafana
-            port: 
-              number: 80
-    host: "grafana.sreplayground.local"
+    host: "chaostest.sre-playground.devops.nakednerds.net"
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -99,25 +83,33 @@ spec:
               name: http
         path: /
         pathType: Prefix
-    host: hubble.sreplayground.local
+    host: "hubble.sre-playground.devops.nakednerds.net"
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  labels:
-    k8s-app: otel
-  name: ingress-browser-tracing
-  namespace: default
+  name: ingress-prometheus
+  namespace: prometheus
 spec:
   ingressClassName: nginx
   rules:
-  - http:
-      paths:
-      - backend:
-          service:
-            name: app-hipster-shop-otelcol
-            port:
-              number: 4318
-        path: /v1/traces
-        pathType: Prefix
-    host: otel.sreplayground.local
+    - http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: prometheus-kube-prometheus-prometheus
+              port: 
+                number: 9090
+      host: "prometheus.sre-playground.devops.nakednerds.net"
+    - http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: prometheus-grafana
+              port: 
+                number: 80
+      host: "grafana.sre-playground.devops.nakednerds.net"
