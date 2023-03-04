@@ -10,3 +10,4 @@ opentelemetry-demo
 opentelemetry/
 nohup.out
 istio-*/
+*-local*
