@@ -8,7 +8,7 @@ clusterName=${3:-"sre-demo-site"}
 indexFile="index.html"
 #indexFile="index-local.html"
 
-kubectl -n $namespace delete configmap dark-index-page
+kubectl -n $namespace delete configmap dark-index-page --ignore-not-found
 kubectl -n $namespace create configmap dark-index-page --from-file=index.html=$indexFile
 kubectl -n $namespace apply -f deploy-index-page.yaml
 
