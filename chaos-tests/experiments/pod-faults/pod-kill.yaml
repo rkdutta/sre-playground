@@ -2,13 +2,12 @@ apiVersion: chaos-mesh.org/v1alpha1
 kind: PodChaos
 metadata:
   name: pod-kill-example
-  namespace: chaos-mesh
 spec:
   action: pod-kill
   mode: one
   duration: '60s'
   selector:
     namespaces:
-      - 'default'
+      - 'app'
     labelSelectors:
       app.kubernetes.io/component: 'adservice'

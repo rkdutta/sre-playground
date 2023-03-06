@@ -2,14 +2,13 @@ apiVersion: chaos-mesh.org/v1alpha1
 kind: StressChaos
 metadata:
   name: memory-stress-example
-  namespace: chaos-mesh
 spec:
   mode: one
   duration: '60s'
   containerNames: ['adservice']
   selector:
     namespaces:
-      - 'default'
+      - 'app'
     labelSelectors:
       app.kubernetes.io/component: 'adservice'
   stressors:

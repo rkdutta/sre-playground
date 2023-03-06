@@ -2,14 +2,13 @@ apiVersion: chaos-mesh.org/v1alpha1
 kind: NetworkChaos
 metadata:
   name: delay
-  namespace: chaos-mesh
 spec:
   action: delay
   mode: one
   duration: '60s'
   selector:
     namespaces:
-      - default
+      - app
     labelSelectors:
         app.kubernetes.io/component: 'adservice'
   delay:

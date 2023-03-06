@@ -2,7 +2,6 @@ apiVersion: chaos-mesh.org/v1alpha1
 kind: Workflow
 metadata:
   name: chaos-parallel-workflow
-  namespace: chaos-mesh 
 spec:
   entry: entry
   templates:
@@ -22,7 +21,7 @@ spec:
         mode: all
         selector:
           namespaces:
-          - 'default'
+          - 'app'
           labelSelectors:
             app.kubernetes.io/component: 'adservice'
         delay:
@@ -41,7 +40,7 @@ spec:
           mode: one
           selector:
             namespaces:
-            - 'default'
+            - 'app'
             labelSelectors:
               app.kubernetes.io/component: 'adservice'
     - name: workflow-stress-chaos
@@ -51,7 +50,7 @@ spec:
         mode: one
         selector:
           namespaces:
-          - 'default'
+          - 'app'
           labelSelectors:
             app.kubernetes.io/component: 'adservice'
         stressors:

@@ -2,14 +2,13 @@ apiVersion: chaos-mesh.org/v1alpha1
 kind: NetworkChaos
 metadata:
   name: bandwidth
-  namespace: chaos-mesh
 spec:
   action: bandwidth
   mode: all
   duration: '60s'
   selector:
     namespaces:
-      - default
+      - app
     labelSelectors:
         app.kubernetes.io/component: 'adservice'
   bandwidth:
