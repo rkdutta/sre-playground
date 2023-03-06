@@ -48,9 +48,9 @@ ingress-nginx:
 
 cni:
   kindnet:
-    enabled: true
-  cilium: 
     enabled: false
+  cilium: 
+    enabled: true
 
 cilium:
   image:
