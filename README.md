@@ -126,7 +126,7 @@ Password: prom-operator
 [chaostest.sre-playground.devops.nakednerds.net](http://chaostest.sre-playground.devops.nakednerds.net/)
 ```
 # Generate user access token
- kubectl -n chaos-mesh create token chaos-dashboard
+ kubectl -n platform create token chaos-dashboard
 
 # Trigger testing 
 kubectl apply -f chaos-mesh/workflows/chaos-workflow.yaml
