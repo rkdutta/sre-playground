@@ -104,6 +104,7 @@ do
    fi
 done
 
+# install cluster
 helm upgrade --install sreplayground-cluster sreplayground-cluster \
 --dependency-update   \
 --namespace kube-system
@@ -124,19 +125,24 @@ if ! $ENABLE_KUBE_PROXY ; then
   waitForReadiness $app $namespace $selector
 fi
 
+# approve CertificateSigningRequests from the nodes: SIGNERNAME=kubernetes.io/kubelet-serving
+kubectl certificate approve $(kubectl get csr --no-headers | grep Pending | grep 'kubernetes.io/kubelet-serving' | grep system:node: | awk -F' ' '{print $1}')
 
+# calculate the CIDR range for metallb front-end address pool 
 KIND_NET_CIDR=$(docker network inspect kind -f '{{(index .IPAM.Config 0).Subnet}}')
 METALLB_IP_START=$(echo ${KIND_NET_CIDR} | sed "s@0.0/16@255.200@")
 METALLB_IP_END=$(echo ${KIND_NET_CIDR} | sed "s@0.0/16@255.250@")
 METALLB_IP_RANGE="${METALLB_IP_START}-${METALLB_IP_END}"
 echo $METALLB_IP_RANGE
 
+# install platform components
 helm upgrade --install  sreplayground-platform sreplayground-platform \
 --namespace platform \
 --create-namespace \
 --dependency-update \
 --set metallb.addresspool=$METALLB_IP_RANGE
 
+# install app
 helm upgrade --install  sreplayground-app sreplayground-app \
 --dependency-update \
 --namespace app \
