@@ -106,8 +106,23 @@ done
 
 helm upgrade --install sreplayground-cluster sreplayground-cluster \
 --dependency-update   \
---namespace kube-system \ 
---wait
+--namespace kube-system
+
+
+if ! $ENABLE_KUBE_PROXY ; then
+  # Install CNI: Cilium
+  app="cilium"
+  selector="k8s-app=cilium"
+  namespace="kube-system"
+  waitForReadiness $app $namespace $selector
+  
+  else
+  # verify default CNI installation
+  app="cni-kindnet"
+  selector="app=kindnet"
+  namespace="kube-system"
+  waitForReadiness $app $namespace $selector
+fi
 
 
 KIND_NET_CIDR=$(docker network inspect kind -f '{{(index .IPAM.Config 0).Subnet}}')
