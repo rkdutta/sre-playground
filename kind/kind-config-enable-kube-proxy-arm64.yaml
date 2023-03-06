@@ -8,4 +8,4 @@ nodes:
 - role: worker
   image: kindest/node:v1.26.0
 networking:
-  disableDefaultCNI: false
+  disableDefaultCNI: true
