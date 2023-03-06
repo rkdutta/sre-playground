@@ -11,3 +11,4 @@ opentelemetry/
 nohup.out
 istio-*/
 *-local*
+*/charts/*.tgz
