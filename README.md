@@ -107,7 +107,7 @@ entries:
 ```
 
 
-# UI Access
+# UI Access (on local port 80)
 ## hipster playground
 [demo.sre-playground.devops.nakednerds.net](http://demo.sre-playground.devops.nakednerds.net/)
 ## grafana
