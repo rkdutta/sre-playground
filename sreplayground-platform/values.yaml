@@ -46,11 +46,7 @@ ingress:
               port: 
                 number: 80
       host: "grafana.sre-playground.devops.nakednerds.net"
-cni:
-  kindnet:
-    enabled: false
-  cilium: 
-    enabled: true
+
 cilium:
   image:
     digest: sha256:6544a3441b086a2e09005d3e21d1a4afb216fae19c5a60b35793c8a9438f8f68
@@ -104,7 +100,7 @@ cilium:
 metallb:
   enabled: true
   IPAddressPool: first-pool
-  addresspool: 172.21.255.200-172.21.255.250
+  addresspool: <SET BY installer.sh or set manually>
   controller:
     image:
       tag: "v0.13.9"

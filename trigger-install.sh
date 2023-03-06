@@ -104,9 +104,44 @@ do
    fi
 done
 
-helm upgrade --install --dependency-update  sreplayground-cluster sreplayground-cluster -n kube-system --create-namespace --wait
-helm upgrade --install --dependency-update  sreplayground-platform sreplayground-platform -n platform --create-namespace
-helm upgrade --install --dependency-update  sreplayground-app sreplayground-app -n app --create-namespace
+helm upgrade --install sreplayground-cluster sreplayground-cluster \
+--dependency-update   \
+--namespace kube-system
+
+
+if ! $ENABLE_KUBE_PROXY ; then
+  # Install CNI: Cilium
+  app="cilium"
+  selector="k8s-app=cilium"
+  namespace="kube-system"
+  waitForReadiness $app $namespace $selector
+  
+  else
+  # verify default CNI installation
+  app="cni-kindnet"
+  selector="app=kindnet"
+  namespace="kube-system"
+  waitForReadiness $app $namespace $selector
+fi
+
+
+KIND_NET_CIDR=$(docker network inspect kind -f '{{(index .IPAM.Config 0).Subnet}}')
+METALLB_IP_START=$(echo ${KIND_NET_CIDR} | sed "s@0.0/16@255.200@")
+METALLB_IP_END=$(echo ${KIND_NET_CIDR} | sed "s@0.0/16@255.250@")
+METALLB_IP_RANGE="${METALLB_IP_START}-${METALLB_IP_END}"
+echo $METALLB_IP_RANGE
+
+helm upgrade --install  sreplayground-platform sreplayground-platform \
+--namespace platform \
+--create-namespace \
+--dependency-update \
+--set metallb.addresspool=$METALLB_IP_RANGE
+
+helm upgrade --install  sreplayground-app sreplayground-app \
+--dependency-update \
+--namespace app \
+--create-namespace
+
 
 echo "SUCCESS.."
 
