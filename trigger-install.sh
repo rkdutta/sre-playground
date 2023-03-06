@@ -31,7 +31,7 @@ waitForReadiness(){
 # ///////////////////////////////////////////////////////////////////////////////////////
 
 ENABLE_KUBE_PROXY=${1:-true} # when false cilium will be installed and kube-proxy will be disabled
-USE_LOCAL_IMAGES=${2:-true} # When true docker compose will run and create local images
+USE_LOCAL_IMAGES=${2:-false} # When true docker compose will run and create local images
 RELEASE_VERSION="1.3.0" # Open Telemetry Community Demo Version. Check: https://github.com/open-telemetry/opentelemetry-demo
 CLUSTER_NAME=${3:-"sre-demo-site"} # kind cluster name
 DEMO_DIR="opentelemetry-demo" 
