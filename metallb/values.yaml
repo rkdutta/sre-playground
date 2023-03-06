@@ -1,7 +1,0 @@
-COMPUTED VALUES:
-controller:
-  image:
-    tag: "v0.13.9"
-speaker:
-  image:
-    tag: "v0.13.9"
