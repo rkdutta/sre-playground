@@ -126,7 +126,12 @@ if ! $ENABLE_KUBE_PROXY ; then
 fi
 
 # approve CertificateSigningRequests from the nodes: SIGNERNAME=kubernetes.io/kubelet-serving
-kubectl certificate approve $(kubectl get csr --no-headers | grep Pending | grep 'kubernetes.io/kubelet-serving' | grep system:node: | awk -F' ' '{print $1}')
+pendingCSRs=$(kubectl get csr --no-headers | grep Pending | grep 'kubernetes.io/kubelet-serving' | grep system:node: | awk -F' ' '{print $1}')
+#echo $pendingCSRs
+if [[ $pendingCSRs ]]; then
+  kubectl get csr $pendingCSRs
+  kubectl certificate approve $pendingCSRs
+fi
 
 # calculate the CIDR range for metallb front-end address pool 
 KIND_NET_CIDR=$(docker network inspect kind -f '{{(index .IPAM.Config 0).Subnet}}')
