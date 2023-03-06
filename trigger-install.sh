@@ -124,7 +124,10 @@ if ! $ENABLE_KUBE_PROXY ; then
   waitForReadiness $app $namespace $selector
 fi
 
+# approve CertificateSigningRequests from the nodes: SIGNERNAME=kubernetes.io/kubelet-serving
+kubectl certificate approve $(kubectl get csr --no-headers | grep Pending | grep 'kubernetes.io/kubelet-serving' | grep system:node: | awk -F' ' '{print $1}')
 
+# calculate the CIDR range for metallb front-end address pool 
 KIND_NET_CIDR=$(docker network inspect kind -f '{{(index .IPAM.Config 0).Subnet}}')
 METALLB_IP_START=$(echo ${KIND_NET_CIDR} | sed "s@0.0/16@255.200@")
 METALLB_IP_END=$(echo ${KIND_NET_CIDR} | sed "s@0.0/16@255.250@")
