@@ -104,7 +104,7 @@ cilium:
 metallb:
   enabled: true
   IPAddressPool: first-pool
-  addresspool: 172.21.255.200-172.21.255.250
+  addresspool: <SET BY installer.sh or set manually>
   controller:
     image:
       tag: "v0.13.9"
