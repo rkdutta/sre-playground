@@ -12,6 +12,18 @@ ingress:
   className: "nginx"
   annotations: {}
   components:
+  - name: chaostest
+    rules:
+    - http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: chaos-dashboard
+              port: 
+                number: 2333
+      host: "chaostest.sre-playground.devops.nakednerds.net"
   - name: prometheus
     rules:
     - http:
