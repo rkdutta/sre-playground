@@ -11,7 +11,3 @@ opentelemetry/
 nohup.out
 istio-*/
 *-local*
-
-
-*-v2.sh
-sreplayground/

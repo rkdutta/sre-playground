@@ -1,9 +1,0 @@
-chaosDaemon:
-  image:
-    tag: "v2.5.1"
-controllerManager:
-  image:
-    tag: "v2.5.1"
-dashboard:
-  image:
-    tag: "v2.5.1"

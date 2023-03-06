@@ -18,6 +18,3 @@ do
         helm ls -n $ns --short | xargs -L1 helm delete -n $ns
     fi
 done
-
-kubectl delete -f ingress/ingress-rules.yaml
-kubectl delete -f ingress/nginx-ingress-def.yaml

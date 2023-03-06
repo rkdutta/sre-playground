@@ -1,0 +1,17 @@
+apiVersion: chaos-mesh.org/v1alpha1
+kind: StressChaos
+metadata:
+  name: cpu-stress-example
+spec:
+  mode: one
+  duration: '60s'
+  containerNames: ['adservice']
+  selector:
+    namespaces:
+      - 'app'
+    labelSelectors:
+      app.kubernetes.io/component: 'adservice'
+  stressors:
+    cpu:
+      workers: 1
+      load: 80

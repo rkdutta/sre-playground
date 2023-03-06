@@ -1,0 +1,13 @@
+apiVersion: chaos-mesh.org/v1alpha1
+kind: PodChaos
+metadata:
+  name: pod-failure-example
+spec:
+  action: pod-failure
+  mode: one
+  duration: '60s'
+  selector:
+    namespaces:
+      - 'app'
+    labelSelectors:
+      app.kubernetes.io/component: 'adservice'

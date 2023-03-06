@@ -82,7 +82,7 @@ There are two options here (Option 1.1 & 1.2). First using [DNSMASQ](https://the
 
 #### Option 1.1: Install and configure DNSMASQ
 ```
-  # The script installs dnsmasq and registers a local dns server "sreplayground.local"
+  # The script installs dnsmasq and registers a local dns server "sre-playground.devops.nakednerds.net"
   ./dns/setup.sh
 ```
 
@@ -90,10 +90,10 @@ There are two options here (Option 1.1 & 1.2). First using [DNSMASQ](https://the
 ```
 command: sudo vi /etc/hosts
 entries:
-127.0.0.1 demo.sreplayground.local
-127.0.0.1 grafana.sreplayground.local
-127.0.0.1 prometheus.sreplayground.local
-127.0.0.1 chaostest.sreplayground.local
+127.0.0.1 demo.sre-playground.devops.nakednerds.net
+127.0.0.1 grafana.sre-playground.devops.nakednerds.net
+127.0.0.1 prometheus.sre-playground.devops.nakednerds.net
+127.0.0.1 chaostest.sre-playground.devops.nakednerds.net
 ```
 
 ### 2. Clone the repo in local
@@ -107,26 +107,26 @@ entries:
 ```
 
 
-# UI Access
+# UI Access (on local port 80)
 ## hipster playground
-[demo.sreplayground.local](http://demo.sreplayground.local/)
+[demo.sre-playground.devops.nakednerds.net](http://demo.sre-playground.devops.nakednerds.net/)
 ## grafana
-[grafana.sreplayground.local](http://grafana.sreplayground.local/)
+[grafana.sre-playground.devops.nakednerds.net](http://grafana.sre-playground.devops.nakednerds.net/)
 ```
 User ID: admin
 Password: prom-operator
 ```
 ## prometheus
-[prometheus.sreplayground.local](http://prometheus.sreplayground.local/)
+[prometheus.sre-playground.devops.nakednerds.net](http://prometheus.sre-playground.devops.nakednerds.net/)
 ## loadtest
-[demo.sreplayground.local/loadgen/](http://demo.sreplayground.local/loadgen/)
+[demo.sre-playground.devops.nakednerds.net/loadgen/](http://demo.sre-playground.devops.nakednerds.net/loadgen/)
 ## tracing: jaeger
-[demo.sreplayground.local/jaeger/](http://demo.sreplayground.local/jaeger/ui/)
+[demo.sre-playground.devops.nakednerds.net/jaeger/](http://demo.sre-playground.devops.nakednerds.net/jaeger/ui/)
 ## chaos-mesh
-[chaostest.sreplayground.local](http://chaostest.sreplayground.local/)
+[chaostest.sre-playground.devops.nakednerds.net](http://chaostest.sre-playground.devops.nakednerds.net/)
 ```
 # Generate user access token
- kubectl -n chaos-mesh create token chaos-dashboard
+ kubectl -n platform create token chaos-dashboard
 
 # Trigger testing 
 kubectl apply -f chaos-mesh/workflows/chaos-workflow.yaml
