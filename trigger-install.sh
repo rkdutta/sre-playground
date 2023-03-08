@@ -89,6 +89,12 @@ kind create cluster --config $KIND_CONFIG_FILE --name $CLUSTER_NAME || true
 # Setting kubectl client context to the current cluster
 kubectl config use-context kind-$CLUSTER_NAME
 
+if kubectl get csr --no-headers | grep Pending | grep 'kubernetes.io/kubelet-serving' | grep system:node: ; then
+  echo "here I am 2" 
+  echo found pendingCSRs
+  kubectl certificate approve $(kubectl get csr --no-headers | grep Pending | grep 'kubernetes.io/kubelet-serving' | grep system:node: | awk -F' ' '{print $1}')
+fi
+
 # verifying cluster installation 
 app="control-plane"
 selector="tier=control-plane"
@@ -117,20 +123,12 @@ if ! $ENABLE_KUBE_PROXY ; then
   namespace="kube-system"
   waitForReadiness $app $namespace $selector
   
-  else
+else
   # verify default CNI installation
   app="cni-kindnet"
   selector="app=kindnet"
   namespace="kube-system"
   waitForReadiness $app $namespace $selector
-fi
-
-# approve CertificateSigningRequests from the nodes: SIGNERNAME=kubernetes.io/kubelet-serving
-pendingCSRs=$(kubectl get csr --no-headers | grep Pending | grep 'kubernetes.io/kubelet-serving' | grep system:node: | awk -F' ' '{print $1}')
-#echo $pendingCSRs
-if [[ $pendingCSRs ]]; then
-  kubectl get csr $pendingCSRs
-  kubectl certificate approve $pendingCSRs
 fi
 
 # calculate the CIDR range for metallb front-end address pool 
