@@ -1,5 +1,0 @@
-apiVersion: apiserver.config.k8s.io/v1alpha1
-kind: TracingConfiguration
-# default value
-endpoint: otel-daemonset-service-collector.opentelemetry.svc.cluster.local:4317
-samplingRatePerMillion: 10000
