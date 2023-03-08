@@ -24,7 +24,7 @@ nodes:
             extraArgs:
               experimental-enable-distributed-tracing: "true"
               experimental-distributed-tracing-service-name: etcd
-              experimental-distributed-tracing-address: sreplayground-app-otelcol.app.svc.cluster.local:4317
+              experimental-distributed-tracing-address: sreplayground-cluster-local-otelcollector:4317
       - |
         apiVersion: kubelet.config.k8s.io/v1beta1
         kind: KubeletConfiguration
@@ -33,7 +33,7 @@ nodes:
           KubeletTracing: true
         tracing:
           samplingRatePerMillion: 1000
-          endpoint: sreplayground-app-otelcol.app.svc.cluster.local:4317
+          endpoint: sreplayground-cluster-local-otelcollector:4317
 - role: worker
   image: kindest/node:v1.26.0
   kubeadmConfigPatches:
@@ -45,7 +45,7 @@ nodes:
           KubeletTracing: true
         tracing:
           samplingRatePerMillion: 1000
-          endpoint: sreplayground-app-otelcol.app.svc.cluster.local:4317
+          endpoint: sreplayground-cluster-local-otelcollector:4317
 - role: worker
   image: kindest/node:v1.26.0
   kubeadmConfigPatches:
@@ -57,7 +57,7 @@ nodes:
           KubeletTracing: true
         tracing:
           samplingRatePerMillion: 1000
-          endpoint: sreplayground-app-otelcol.app.svc.cluster.local:4317
+          endpoint: sreplayground-cluster-local-otelcollector:4317
 networking:
   disableDefaultCNI: true
 featureGates:

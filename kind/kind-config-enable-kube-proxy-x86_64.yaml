@@ -3,11 +3,37 @@ apiVersion: kind.x-k8s.io/v1alpha4
 nodes:
 - role: control-plane
   image: kindest/node:v1.26.0
+  extraMounts:
+      - hostPath: kind/tracing
+        containerPath: /etc/kubernetes/tracing
   kubeadmConfigPatches:
+      - |
+        apiVersion: kubeadm.k8s.io/v1beta3
+        kind: ClusterConfiguration
+        apiServer:
+          extraArgs:
+            tracing-config-file: /etc/kubernetes/tracing/kube-apiserver-tracing-config.yaml
+          extraVolumes:
+            - name: tracing
+              hostPath: /etc/kubernetes/tracing
+              mountPath: /etc/kubernetes/tracing
+              readOnly: true
+              pathType: "Directory"
+        etcd:
+          local:
+            extraArgs:
+              experimental-enable-distributed-tracing: "true"
+              experimental-distributed-tracing-service-name: etcd
+              experimental-distributed-tracing-address: sreplayground-cluster-local-otelcollector:4317
       - |
         apiVersion: kubelet.config.k8s.io/v1beta1
         kind: KubeletConfiguration
         serverTLSBootstrap: true
+        featureGates:
+          KubeletTracing: true
+        tracing:
+          samplingRatePerMillion: 1000
+          endpoint: sreplayground-cluster-local-otelcollector:4317
 - role: worker
   image: kindest/node:v1.26.0
   kubeadmConfigPatches:
@@ -15,6 +41,11 @@ nodes:
         apiVersion: kubelet.config.k8s.io/v1beta1
         kind: KubeletConfiguration
         serverTLSBootstrap: true
+        featureGates:
+          KubeletTracing: true
+        tracing:
+          samplingRatePerMillion: 1000
+          endpoint: sreplayground-cluster-local-otelcollector:4317
 - role: worker
   image: kindest/node:v1.26.0
   kubeadmConfigPatches:
@@ -22,5 +53,13 @@ nodes:
         apiVersion: kubelet.config.k8s.io/v1beta1
         kind: KubeletConfiguration
         serverTLSBootstrap: true
+        featureGates:
+          KubeletTracing: true
+        tracing:
+          samplingRatePerMillion: 1000
+          endpoint: sreplayground-cluster-local-otelcollector:4317
 networking:
   disableDefaultCNI: true
+featureGates:
+  APIServerTracing: true
+  KubeletTracing: true
