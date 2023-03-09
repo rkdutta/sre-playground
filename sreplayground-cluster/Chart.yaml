@@ -18,3 +18,11 @@ dependencies:
     repository: https://charts.jetstack.io
     version: "v1.11.0"
     condition: cert-manager.enabled
+  - name: base
+    repository: https://istio-release.storage.googleapis.com/charts
+    version: "1.16.1"
+    condition: istio-base.enabled
+  - name: istiod
+    repository: https://istio-release.storage.googleapis.com/charts
+    version: "1.16.1"
+    condition: istio-base.enabled

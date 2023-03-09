@@ -10,3 +10,5 @@ cni:
 cert-manager:
   enabled: true
   installCRDs: true
+istio-base:
+  enabled: true
