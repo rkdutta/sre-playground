@@ -7,3 +7,6 @@ cni:
     enabled: true
   cilium: 
     enabled: false
+cert-manager:
+  enabled: true
+  installCRDs: true

@@ -17,5 +17,11 @@ dependencies:
 - name: chaos-mesh
   repository: https://charts.chaos-mesh.org
   version: 2.5.1
-digest: sha256:4542a189df21eb1c33e6e17b1a7355eb6fe8c8a12f64353a7bd35500ff2633d0
-generated: "2023-03-06T20:18:58.655004+01:00"
+- name: metrics-server
+  repository: https://kubernetes-sigs.github.io/metrics-server/
+  version: 3.8.4
+- name: opentelemetry-operator
+  repository: https://open-telemetry.github.io/opentelemetry-helm-charts
+  version: 0.24.1
+digest: sha256:99399e6a847bb0d55802c8c09c362c2bb633c41112bd1989562262207296d684
+generated: "2023-03-09T08:48:30.752118+01:00"
