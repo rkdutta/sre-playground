@@ -1,5 +1,5 @@
 apiVersion: apiserver.config.k8s.io/v1alpha1
 kind: TracingConfiguration
 # default value
-endpoint: sreplayground-app-otelcol.app.svc.cluster.local:4317
+endpoint: sreplayground-platform-opentelemetry-collector.platform.svc.cluster.local:4317
 samplingRatePerMillion: 10000
