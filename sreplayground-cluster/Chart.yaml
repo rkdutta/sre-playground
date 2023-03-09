@@ -14,3 +14,11 @@ dependencies:
     repository: https://helm.cilium.io/
     version: 1.13.0
     condition: cni.cilium.enabled
+  - name: cert-manager
+    repository: https://charts.jetstack.io
+    version: "v1.11.0"
+    condition: cert-manager.enabled
+  - name: opentelemetry-operator
+    repository: https://open-telemetry.github.io/opentelemetry-helm-charts
+    version: 0.24.1
+    condition: opentelemetry-operator.enabled
