@@ -10,6 +10,3 @@ cni:
 cert-manager:
   enabled: true
   installCRDs: true
-opentelemetry-operator:
-  enabled: true
-  hostNetwork: true
