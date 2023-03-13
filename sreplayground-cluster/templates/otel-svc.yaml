@@ -5,9 +5,9 @@ kind: Service
 metadata:
   labels:
     app.kubernetes.io/component: opentelemetry-collector
-    app.kubernetes.io/instance: default.sreplayground-platform-opentelemetry
+    app.kubernetes.io/instance: {{ .Release.Name }}-otel-agent-service
     app.kubernetes.io/managed-by: opentelemetry-operator
-    app.kubernetes.io/name: sreplayground-platform-opentelemetry-collector
+    app.kubernetes.io/name: {{ .Release.Name }}-otel-agent-service
     app.kubernetes.io/part-of: opentelemetry
     app.kubernetes.io/version: latest
   name: otel-collector
