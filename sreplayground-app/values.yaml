@@ -4,6 +4,7 @@
 
 ingress:
   enabled: true
+  class: nginx
   className: "nginx"
   annotations: {}
   components:
