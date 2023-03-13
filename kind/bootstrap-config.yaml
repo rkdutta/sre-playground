@@ -1,0 +1,179 @@
+cni:
+  kindnet:
+    enabled: false # the value is set from the bootstrap script on-the-fly
+  cilium: 
+    enabled: true # the value is set from the bootstrap script on-the-fly
+kind-configs:
+  without-kubeproxy:
+    cni: cilium
+    cni-pod-selector: "k8s-app=cilium"
+    arm64:
+      kind: Cluster
+      apiVersion: kind.x-k8s.io/v1alpha4
+      nodes:
+      - role: control-plane
+        image: kindest/node:v1.26.0
+        extraPortMappings:
+        - containerPort: 80
+          hostPort: 80
+          protocol: TCP
+          listenAddress: "127.0.0.1"
+        - containerPort: 443
+          hostPort: 443
+          protocol: TCP
+          listenAddress: "127.0.0.1"
+        extraMounts:
+            - hostPath: kind/tracing
+              containerPath: /etc/kubernetes/tracing
+            # not working ImagePull Error -> otel will also not work
+            - hostPath: kind/resolv.conf
+              containerPath: /etc/resolv.conf
+        kubeadmConfigPatches:
+            - |
+              apiVersion: kubeadm.k8s.io/v1beta3
+              kind: ClusterConfiguration
+              apiServer:
+                apiServer:
+                dns:
+                  servers:
+                  - 10.96.0.10
+                extraArgs:
+                  tracing-config-file: /etc/kubernetes/tracing/kube-apiserver-tracing-config.yaml
+                extraVolumes:
+                  - name: tracing
+                    hostPath: /etc/kubernetes/tracing
+                    mountPath: /etc/kubernetes/tracing
+                    readOnly: true
+                    pathType: "Directory"
+              etcd:
+                local:
+                  extraArgs:
+                    experimental-enable-distributed-tracing: "true"
+                    experimental-distributed-tracing-service-name: etcd
+                    experimental-distributed-tracing-address: otel-collector.kube-system.svc.cluster.local:4317
+            - |
+              apiVersion: kubelet.config.k8s.io/v1beta1
+              kind: KubeletConfiguration
+              serverTLSBootstrap: true
+              featureGates:
+                KubeletTracing: true
+              tracing:
+                samplingRatePerMillion: 1000
+                endpoint: otel-collector.kube-system.svc.cluster.local:4317
+      - role: worker
+        image: kindest/node:v1.26.0
+        kubeadmConfigPatches:
+            - |
+              apiVersion: kubelet.config.k8s.io/v1beta1
+              kind: KubeletConfiguration
+              serverTLSBootstrap: true
+              featureGates:
+                KubeletTracing: true
+              tracing:
+                samplingRatePerMillion: 1000
+                endpoint: otel-collector.kube-system.svc.cluster.local:4317
+      - role: worker
+        image: kindest/node:v1.26.0
+        kubeadmConfigPatches:
+            - |
+              apiVersion: kubelet.config.k8s.io/v1beta1
+              kind: KubeletConfiguration
+              serverTLSBootstrap: true
+              featureGates:
+                KubeletTracing: true
+              tracing:
+                samplingRatePerMillion: 1000
+                endpoint: otel-collector.kube-system.svc.cluster.local:4317
+      networking:
+        disableDefaultCNI: true
+        kubeProxyMode: none
+      featureGates:
+        APIServerTracing: true
+        KubeletTracing: true
+  with-kubeproxy:
+    cni: kindnet
+    cni-pod-selector: "app=kindnet"
+    arm64:
+      kind: Cluster
+      apiVersion: kind.x-k8s.io/v1alpha4
+      nodes:
+      - role: control-plane
+        image: kindest/node:v1.26.0
+        extraMounts:
+            - hostPath: kind/tracing
+              containerPath: /etc/kubernetes/tracing
+            - hostPath: kind/resolv.conf
+              containerPath: /etc/resolv.conf
+        extraPortMappings:
+        - containerPort: 80
+          hostPort: 80
+          protocol: TCP
+          listenAddress: "127.0.0.1"
+        - containerPort: 443
+          hostPort: 443
+          protocol: TCP
+          listenAddress: "127.0.0.1"
+        - containerPort: 4317
+          hostPort: 4317
+          protocol: TCP
+          listenAddress: "127.0.0.1"
+        kubeadmConfigPatches:
+            - |
+              apiVersion: kubeadm.k8s.io/v1beta3
+              kind: ClusterConfiguration
+              apiServer:
+                dns:
+                  servers:
+                  - 10.96.0.10
+                extraArgs:
+                  tracing-config-file: /etc/kubernetes/tracing/kube-apiserver-tracing-config.yaml
+                extraVolumes:
+                  - name: tracing
+                    hostPath: /etc/kubernetes/tracing
+                    mountPath: /etc/kubernetes/tracing
+                    readOnly: true
+                    pathType: "Directory"
+              etcd:
+                local:
+                  extraArgs:
+                    experimental-enable-distributed-tracing: "true"
+                    experimental-distributed-tracing-service-name: etcd
+                    experimental-distributed-tracing-address: otel-collector.kube-system.svc.cluster.local:4317
+            - |
+              apiVersion: kubelet.config.k8s.io/v1beta1
+              kind: KubeletConfiguration
+              serverTLSBootstrap: true
+              featureGates:
+                KubeletTracing: true
+              tracing:
+                samplingRatePerMillion: 1000
+                endpoint: otel-collector.kube-system.svc.cluster.local:4317
+      - role: worker
+        image: kindest/node:v1.26.0
+        kubeadmConfigPatches:
+            - |
+              apiVersion: kubelet.config.k8s.io/v1beta1
+              kind: KubeletConfiguration
+              serverTLSBootstrap: true
+              featureGates:
+                KubeletTracing: true
+              tracing:
+                samplingRatePerMillion: 1000
+                endpoint: otel-collector.kube-system.svc.cluster.local:4317
+      - role: worker
+        image: kindest/node:v1.26.0
+        kubeadmConfigPatches:
+            - |
+              apiVersion: kubelet.config.k8s.io/v1beta1
+              kind: KubeletConfiguration
+              serverTLSBootstrap: true
+              featureGates:
+                KubeletTracing: true
+              tracing:
+                samplingRatePerMillion: 1000
+                endpoint: otel-collector.kube-system.svc.cluster.local:4317
+      networking:
+        disableDefaultCNI: false
+      featureGates:
+        APIServerTracing: true
+        KubeletTracing: true
