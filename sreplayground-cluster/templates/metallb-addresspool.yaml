@@ -5,7 +5,7 @@ kind: IPAddressPool
 metadata:
   name: {{ .Release.Name }}-{{ .Values.metallb.IPAddressPool }}
   annotations:
-    "helm.sh/hook": post-install, post-upgrade
+    helm.sh/hook: post-install, post-upgrade
 spec:
   addresses:
     - {{ .Values.metallb.addresspool }}
@@ -16,7 +16,7 @@ kind: L2Advertisement
 metadata:
   name: {{ .Release.Name }}-l2advertisement
   annotations:
-    "helm.sh/hook": post-install, post-upgrade
+    helm.sh/hook: post-install, post-upgrade
 spec:
   ipAddressPools:
     - {{ .Release.Name }}-{{ .Values.metallb.IPAddressPool }}

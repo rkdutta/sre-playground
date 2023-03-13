@@ -18,11 +18,11 @@ dependencies:
     repository: https://charts.jetstack.io
     version: "v1.11.0"
     condition: cert-manager.enabled
-  - name: base
-    repository: https://istio-release.storage.googleapis.com/charts
-    version: "1.16.1"
-    condition: istio-base.enabled
-  - name: istiod
-    repository: https://istio-release.storage.googleapis.com/charts
-    version: "1.16.1"
-    condition: istio-base.enabled
+  - name: metallb
+    repository: https://metallb.github.io/metallb
+    version: 0.13.9
+    condition: metallb.enabled
+  - name: opentelemetry-collector
+    repository: https://open-telemetry.github.io/opentelemetry-helm-charts
+    version: 0.49.3
+    condition: opentelemetry.enabled

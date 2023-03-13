@@ -5,11 +5,11 @@ dependencies:
 - name: cert-manager
   repository: https://charts.jetstack.io
   version: v1.11.0
-- name: base
-  repository: https://istio-release.storage.googleapis.com/charts
-  version: 1.16.1
-- name: istiod
-  repository: https://istio-release.storage.googleapis.com/charts
-  version: 1.16.1
-digest: sha256:75c1bc621e7c13a2fa7f2c2a0d240d3d9e06d3bc7091bb859d691ec9c5926511
-generated: "2023-03-09T14:08:38.761325+01:00"
+- name: metallb
+  repository: https://metallb.github.io/metallb
+  version: 0.13.9
+- name: opentelemetry-collector
+  repository: https://open-telemetry.github.io/opentelemetry-helm-charts
+  version: 0.49.3
+digest: sha256:9faf2a6ebf35d77bd0ae475b3a0a4f1067e7bdb8297beb19ce67816c856d600a
+generated: "2023-03-13T07:24:12.670511+01:00"
