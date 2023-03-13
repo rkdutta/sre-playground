@@ -11,14 +11,11 @@ dependencies:
 - name: ingress-nginx
   repository: https://kubernetes.github.io/ingress-nginx
   version: 4.5.2
-- name: chaos-mesh
-  repository: https://charts.chaos-mesh.org
-  version: 2.5.1
 - name: metrics-server
   repository: https://kubernetes-sigs.github.io/metrics-server/
   version: 3.8.4
 - name: opentelemetry-operator
   repository: https://open-telemetry.github.io/opentelemetry-helm-charts
   version: 0.24.1
-digest: sha256:9e3d199a6926d0bde806811fec8490e164c852e611fde5dfea307a319d0d1f6a
-generated: "2023-03-13T08:00:56.159785+01:00"
+digest: sha256:8f6c7b4ecbf3678367c1d9d3767663bc0fd73cc108475d60d2a988954cd6bca2
+generated: "2023-03-13T09:36:15.24008+01:00"

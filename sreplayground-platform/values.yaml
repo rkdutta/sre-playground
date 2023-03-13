@@ -12,18 +12,6 @@ ingress:
   className: "nginx"
   annotations: {}
   components:
-  - name: chaostest
-    rules:
-    - http:
-        paths:
-        - path: /
-          pathType: Prefix
-          backend:
-            service:
-              name: chaos-dashboard
-              port: 
-                number: 2333
-      host: "chaostest.sre-playground.devops.nakednerds.net"
   - name: prometheus
     rules:
     - http:
@@ -46,7 +34,6 @@ ingress:
               port: 
                 number: 80
       host: "grafana.sre-playground.devops.nakednerds.net"
-
 
 loki-stack:
   loki:
@@ -220,18 +207,6 @@ fluent-bit:
 #   prometheusOperator:
 #     image:
 #       tag: "v0.63.0"
-
-chaos-mesh:
-  enabled: true
-  chaosDaemon:
-    image:
-      tag: "v2.5.1"
-  controllerManager:
-    image:
-      tag: "v2.5.1"
-  dashboard:
-    image:
-      tag: "v2.5.1"
 
 kube-prometheus-stack:
   enabled: true
