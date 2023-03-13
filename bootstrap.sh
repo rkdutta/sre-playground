@@ -78,7 +78,6 @@ helm upgrade --install sreplayground-cluster sreplayground-cluster \
 # TO BE DISCUSSED BEFORE ENABLING ISTIO
 #install istio and kiali 
 #(cd istio && ./istio.sh)
-exit
 
 # install platform components
 kubectl create namespace platform --dry-run=client -o yaml | kubectl apply -f -
