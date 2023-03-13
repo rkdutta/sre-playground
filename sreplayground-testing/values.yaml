@@ -1,0 +1,32 @@
+# Default values for sreplayground.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations: {}
+  components:
+  - name: chaostest
+    rules:
+    - http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: chaos-dashboard
+              port: 
+                number: 2333
+      host: "chaostest.sre-playground.devops.nakednerds.net"
+chaos-mesh:
+  enabled: true
+  chaosDaemon:
+    image:
+      tag: "v2.5.1"
+  controllerManager:
+    image:
+      tag: "v2.5.1"
+  dashboard:
+    image:
+      tag: "v2.5.1"
