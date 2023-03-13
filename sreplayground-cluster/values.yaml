@@ -2,17 +2,26 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-cni:
-  kindnet:
-    enabled: false
-  cilium: 
-    enabled: false
+# cni:
+#   kindnet:
+#     enabled: false
+#   cilium: 
+#     enabled: false
+#     with-kubeproxy:
+#       kubeProxyReplacement: disabled
+#       ipMasqAgent:
+#         enabled: false
+#     without-kubeproxy:
+#       kubeProxyReplacement: strict
+#       ipMasqAgent:
+#         enabled: true
 
 cert-manager:
   enabled: true
   installCRDs: true
 
 cilium:
+  enabled: true
   image:
     digest: sha256:6544a3441b086a2e09005d3e21d1a4afb216fae19c5a60b35793c8a9438f8f68
     tag: v1.13.0
@@ -44,12 +53,12 @@ cilium:
         hosts:
           - hubble.sre-playground.devops.nakednerds.net
   ipMasqAgent:
-    enabled: true
+    enabled: true #dynamically set using bootstrap script
   ipam:
     mode: kubernetes
   k8sServiceHost: sre-demo-site-control-plane
   k8sServicePort: 6443
-  kubeProxyReplacement: strict
+  kubeProxyReplacement: strict #dynamically set using bootstrap script
   operator:
   # -- Enable prometheus metrics for cilium-operator on the configured port at /metrics
     prometheus:
@@ -74,10 +83,8 @@ metallb:
     image:
       tag: "v0.13.9"
 
-opentelemetry: 
-  enabled: true
 opentelemetry-collector:
-  enabled: true
+  enabled: false
   mode: daemonset
   hostNetwork: true
   podLabels: 
