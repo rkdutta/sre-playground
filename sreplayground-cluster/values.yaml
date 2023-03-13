@@ -1,27 +1,12 @@
 # Default values for sreplayground.
 # This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
-
-# cni:
-#   kindnet:
-#     enabled: false
-#   cilium: 
-#     enabled: false
-#     with-kubeproxy:
-#       kubeProxyReplacement: disabled
-#       ipMasqAgent:
-#         enabled: false
-#     without-kubeproxy:
-#       kubeProxyReplacement: strict
-#       ipMasqAgent:
-#         enabled: true
 
 cert-manager:
   enabled: true
   installCRDs: true
 
 cilium:
-  enabled: true
+  enabled: false # should be set to true via bootstrap script or manually pass usnig --set
   image:
     digest: sha256:6544a3441b086a2e09005d3e21d1a4afb216fae19c5a60b35793c8a9438f8f68
     tag: v1.13.0
@@ -56,7 +41,7 @@ cilium:
     enabled: true #dynamically set using bootstrap script
   ipam:
     mode: kubernetes
-  k8sServiceHost: sre-demo-site-control-plane
+  k8sServiceHost: <dynamically set>
   k8sServicePort: 6443
   kubeProxyReplacement: strict #dynamically set using bootstrap script
   operator:
@@ -84,7 +69,7 @@ metallb:
       tag: "v0.13.9"
 
 opentelemetry-collector:
-  enabled: false
+  enabled: true
   mode: daemonset
   hostNetwork: true
   podLabels: 
