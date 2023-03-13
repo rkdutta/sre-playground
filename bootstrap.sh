@@ -65,14 +65,8 @@ helm upgrade --install sreplayground-cluster sreplayground-cluster \
 --dependency-update   \
 --namespace kube-system \
 --set cni.$CNI.enabled=true \
---set metallb.addresspool=$METALLB_IP_RANGE --wait --debug
+--set metallb.addresspool=$METALLB_IP_RANGE --wait
 
-# # install cluster
-# helm dependency update sreplayground-cluster
-# helm upgrade --install sreplayground-cluster sreplayground-cluster \
-# --dependency-update   \
-# --namespace kube-system \
-# --set metallb.addresspool=$METALLB_IP_RANGE --wait
 
 # verifying cni installation
 CNI_POD_SELECTOR=$(yq .kind-configs.$KUBEPROXY_OPTS.cni-pod-selector $PLAYGROUND_CONFIG_FILE) 
@@ -82,7 +76,6 @@ waitForReadiness "cni-$CNI" "kube-system" $CNI_POD_SELECTOR
 #install istio and kiali
 #(cd istio && ./istio.sh)
 
-exit
 # install platform components
 kubectl create namespace platform --dry-run=client -o yaml | kubectl apply -f -
 #kubectl label ns platform istio-injection=enabled
@@ -91,17 +84,26 @@ helm upgrade --install  sreplayground-platform sreplayground-platform \
 --namespace platform \
 --create-namespace \
 --dependency-update \
---set metallb.addresspool=$METALLB_IP_RANGE --wait
-
-exit
+--wait
+ 
 
 # install app
 kubectl create namespace app --dry-run=client -o yaml | kubectl apply -f -
 kubectl label ns app istio-injection=enabled
-helm dependency update sreplayground-app
+#helm dependency update sreplayground-app
 helm upgrade --install  sreplayground-app sreplayground-app \
 --dependency-update \
 --namespace app \
+--create-namespace
+
+
+# install testing
+kubectl create namespace testing --dry-run=client -o yaml | kubectl apply -f -
+kubectl label ns testing istio-injection=enabled
+helm dependency update sreplayground-testing
+helm upgrade --install  sreplayground-testing sreplayground-testing \
+--dependency-update \
+--namespace testing \
 --create-namespace
 
 
