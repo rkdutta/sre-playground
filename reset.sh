@@ -18,3 +18,8 @@ do
         helm ls -n $ns --short | xargs -L1 helm delete -n $ns
     fi
 done
+
+istioctl uninstall --purge
+kubectl -n istio-system delete deployments.apps kiali  --ignore-not-found
+kubectl -n istio-system delete deployments.apps prometheus  --ignore-not-found
+kubectl delete ing -A --all

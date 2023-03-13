@@ -3,7 +3,7 @@ set -eo pipefail
 
 
 # install netcat, apache,git and kubectl
-sudo apt update && sudo apt install -y netcat apache2 kubectl git
+sudo apt update && sudo apt install -y netcat apache2 kubectl git yq
 
 # install helm
 curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | sudo tee /usr/share/keyrings/helm.gpg > /dev/null

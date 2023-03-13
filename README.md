@@ -103,7 +103,7 @@ entries:
 
 ### 3. Execute the installtion script
 ```
-./trigger-install.sh
+./bootstrap.sh
 ```
 
 
@@ -136,11 +136,11 @@ kubectl apply -f chaos-mesh/experiments/pod-faults/container-kill.yaml
 
 # Reseting the cluster
 ```
-./trigger-reset.sh
+./reset.sh
 (Note: Control plane components and CNI will not be deleted)
 ```
 
 # Deleting the cluster
 ```
-./trigger-teardown.sh
+./teardown.sh
 ```

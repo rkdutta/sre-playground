@@ -1,12 +1,79 @@
 # Default values for sreplayground.
 # This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
 
-cni:
-  kindnet:
-    enabled: true
-  cilium: 
-    enabled: false
 cert-manager:
   enabled: true
   installCRDs: true
+
+cilium:
+  enabled: false # should be set to true via bootstrap script or manually pass usnig --set
+  image:
+    digest: sha256:6544a3441b086a2e09005d3e21d1a4afb216fae19c5a60b35793c8a9438f8f68
+    tag: v1.13.0
+  bpf:
+    masquerade: true
+  hubble:
+    enabled: true
+    metrics:
+      enabled:
+      - dns
+      - drop
+      - tcp
+      - flow
+      - port-distribution
+      - icmp
+      - http
+    relay:
+      enabled: true
+    tls:
+      auto:
+        enabled: true
+        method: helm
+    ui:
+      enabled: true
+      ingress:
+        class: nginx
+        className: nginx
+        enabled: true
+        hosts:
+          - hubble.sre-playground.devops.nakednerds.net
+  ipMasqAgent:
+    enabled: true #dynamically set using bootstrap script
+  ipam:
+    mode: kubernetes
+  k8sServiceHost: <dynamically set>
+  k8sServicePort: 6443
+  kubeProxyReplacement: strict #dynamically set using bootstrap script
+  operator:
+  # -- Enable prometheus metrics for cilium-operator on the configured port at /metrics
+    prometheus:
+      enabled: true
+  # -- Enable prometheus metrics for cilium-operator on the configured port at /metrics
+  prometheus:
+    enabled: true
+  # -- Cilium Ingress is disabled using nginx ingress controller. Cilium ingress controller 
+  #    is no compatible with kind clusters
+  ingressController:
+    enabled: false
+    loadbalancerMode: shared
+
+metallb:
+  enabled: true
+  IPAddressPool: first-pool
+  addresspool: <SET BY installer.sh or set manually>
+  controller:
+    image:
+      tag: "v0.13.9"
+  speaker:
+    image:
+      tag: "v0.13.9"
+
+opentelemetry-collector:
+  enabled: true
+  mode: daemonset
+  hostNetwork: true
+  podLabels: 
+    otel-component: agent-ds-collector
+  tolerations:
+  - key: node-role.kubernetes.io/control-plane
+    operator: "Exists"

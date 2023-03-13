@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/use-regex: "true"
+  name: sreplayground-cluster-kiali
+  namespace: istio-system
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: kiali.sre-playground.devops.nakednerds.net
+    http:
+      paths:
+      - backend:
+          service:
+            name: kiali
+            port:
+              name: http
+        path: /
+        pathType: Prefix
