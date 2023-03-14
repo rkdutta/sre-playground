@@ -4018,6 +4018,7 @@ metrics-server:
 
 opentelemetry-collector:
   enabled: true
+  nameOverride: otel-collector-hub
   mode: deployment
   hostNetwork: false
   config:

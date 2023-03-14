@@ -70,6 +70,7 @@ metallb:
 
 opentelemetry-collector:
   enabled: true
+  nameOverride: otel-collector-agent
   mode: daemonset
   hostNetwork: false
   podLabels: 
@@ -81,7 +82,7 @@ opentelemetry-collector:
     exporters:
       logging: {}
       otlp:
-        endpoint: 'sreplayground-platform-opentelemetry-collector.platform.svc.cluster.local:4317'
+        endpoint: 'sreplayground-platform-otel-collector-hub.platform.svc.cluster.local:4317'
         tls: 
           insecure: true
     extensions:
