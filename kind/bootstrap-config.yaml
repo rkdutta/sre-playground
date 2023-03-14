@@ -24,10 +24,6 @@ common-config:
               apiVersion: kubeadm.k8s.io/v1beta3
               kind: ClusterConfiguration
               apiServer:
-                apiServer:
-                dns:
-                  servers:
-                  - 10.96.0.10
                 extraArgs:
                   tracing-config-file: /etc/kubernetes/tracing/kube-apiserver-tracing-config.yaml
                 extraVolumes:
