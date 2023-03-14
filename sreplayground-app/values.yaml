@@ -113,18 +113,13 @@ opentelemetry-demo:
     grafana:
       enabled: false # The demo is using another grafana instance from prometheus community
     jaeger:
-      enabled: true
+      enabled: false
     otelcol:
       enabled: true
     prometheus:
       enabled: false # The demo is using another prometheus instance from prometheus community
   opentelemetry-collector:
     config:
-      service:
-        pipelines:
-          metrics:
-            exporters:
-              - prometheus
-          traces:
-            exporters:
-              - otlp
+      exporters:
+        otlp:
+          endpoint: sreplayground-platform-opentelemetry-collector.platform.svc.cluster.local:4317
