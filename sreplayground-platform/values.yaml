@@ -12,6 +12,18 @@ ingress:
   className: "nginx"
   annotations: {}
   components:
+  - name: jaeger-query
+    rules:
+    - http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: sreplayground-platform-jaeger-query
+              port: 
+                name: http-query
+      host: "jaeger.sre-playground.devops.nakednerds.net"
   - name: prometheus
     rules:
     - http:
@@ -4012,7 +4024,7 @@ opentelemetry-collector:
     exporters:
       logging: {}
       otlp:
-        endpoint: 'sreplayground-app-jaeger-collector.app.svc.cluster.local:4317'
+        endpoint: 'sreplayground-platform-jaeger-collector.platform.svc.cluster.local:4317'
         tls: 
           insecure: true
     extensions:
@@ -4060,3 +4072,6 @@ opentelemetry-collector:
       telemetry:
         metrics:
           address: ${MY_POD_IP}:8888
+
+jaeger-operator:
+  enabled: true

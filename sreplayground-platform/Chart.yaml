@@ -36,3 +36,7 @@ dependencies:
     repository: https://open-telemetry.github.io/opentelemetry-helm-charts
     version: 0.49.3
     condition: opentelemetry-collector.enabled
+  - name: jaeger-operator
+    repository: https://jaegertracing.github.io/helm-charts
+    version: 2.41.0
+    condition: jaeger-operator.enabled
