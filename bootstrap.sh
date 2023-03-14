@@ -87,7 +87,7 @@ helm upgrade --install  sreplayground-platform sreplayground-platform \
 --create-namespace \
 --dependency-update \
 --wait
- 
+
 
 # install app
 kubectl create namespace app --dry-run=client -o yaml | kubectl apply -f -
