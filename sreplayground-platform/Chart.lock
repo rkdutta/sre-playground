@@ -14,8 +14,8 @@ dependencies:
 - name: metrics-server
   repository: https://kubernetes-sigs.github.io/metrics-server/
   version: 3.8.4
-- name: opentelemetry-operator
+- name: opentelemetry-collector
   repository: https://open-telemetry.github.io/opentelemetry-helm-charts
-  version: 0.24.1
-digest: sha256:8f6c7b4ecbf3678367c1d9d3767663bc0fd73cc108475d60d2a988954cd6bca2
-generated: "2023-03-13T09:36:15.24008+01:00"
+  version: 0.49.3
+digest: sha256:3e296b6002792a198f833407376ac135207a5bf7574c7627e3d84bcf7133ff6e
+generated: "2023-03-14T10:09:38.653726+01:00"

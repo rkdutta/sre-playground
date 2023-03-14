@@ -32,7 +32,7 @@ dependencies:
     repository: https://kubernetes-sigs.github.io/metrics-server/
     version: 3.8.4
     condition: metrics-server.enabled
-  - name: opentelemetry-operator
+  - name: opentelemetry-collector
     repository: https://open-telemetry.github.io/opentelemetry-helm-charts
-    version: 0.24.1
-    condition: opentelemetry-operator.enabled
+    version: 0.49.3
+    condition: opentelemetry-collector.enabled
