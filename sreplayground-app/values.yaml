@@ -122,4 +122,4 @@ opentelemetry-demo:
     config:
       exporters:
         otlp:
-          endpoint: sreplayground-platform-opentelemetry-collector.platform.svc.cluster.local:4317
+          endpoint: sreplayground-platform-otel-collector-hub.platform.svc.cluster.local:4317
