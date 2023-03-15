@@ -1,0 +1,32 @@
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app: grafana
+  name: grafana-cilium-dashboard
+data:
+  cilium-dashboard.json: |-
+{{ .Files.Get "files/cilium-dashboard.json" | indent 4 }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app: grafana
+  name: grafana-cilium-operator-dashboard
+data:
+  cilium-operator-dashboard.json: |-
+{{ .Files.Get "files/cilium-operator-dashboard.json" | indent 4 }}
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app: grafana
+  name: grafana-hubble-dashboard
+data:
+  hubble-dashboard.json: |-
+{{ .Files.Get "files/hubble-dashboard.json" | indent 4 }}
