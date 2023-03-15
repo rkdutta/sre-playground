@@ -7,23 +7,29 @@ E2E solution runs in local k8 clusters provisioned with kind.
 ### Kubernetes Cluster
 - [x] kind
   - [x] with kube-proxy
-    - [x] x86_64
-    - [x] arm64 (apple mac m1 chips)
+    - [x] CNI
+       - [x] kindnet
+          - [x] x86_64
+          - [x] arm64
+       - [x] cilium
+          - [x] x86_64
+          - [x] arm64
   - [x] without kube-proxy
-    - [ ] cilium/eBPF
-      - [ ] x86_64
-      - [x] arm64 (apple mac m1 chips)
+    - [x] CNI
+       - [x] cilium
+          - [x] x86_64
+          - [x] arm64
 ### Demo Application
 - [x] [hipster](/apps/hipster-shop-app/) ([chart-source](https://github.com/open-telemetry/opentelemetry-demo))
 ### Logging
 - [x] fluent-bit :arrow_right: Loki
     - [x] with kube-proxy
-    - [ ] without kube-proxy
+    - [x] without kube-proxy
 - [x] Loki
 ### Traces
-- [ ] OpenTelemetry :arrow_right: Jaeger
+- [x] OpenTelemetry :arrow_right: Jaeger
   - [x] workload traces
-  - [ ] kubernetes controleplane traces
+  - [x] kubernetes controleplane traces
 ### Metrics
 - [x] Prometheus
   - [x] kubernetes components metrics
@@ -32,10 +38,10 @@ E2E solution runs in local k8 clusters provisioned with kind.
 ### Ingress
 - [x] nginx-ingress
   - [x] with kube-proxy
-  - [ ] without kube-proxy
+  - [x] without kube-proxy
 - [ ] cilium
   - [ ] with kube-proxy
-  - [x] without kube-proxy
+  - [ ] without kube-proxy
 ### Loadbalancer
 - [x] Metallb
 ### Testing
@@ -102,12 +108,21 @@ entries:
 ```
 
 ### 3. Execute the installtion script
+#### with-kubeproxy and cilium cni (default)
 ```
 ./bootstrap.sh
 ```
+#### with-kubeproxy and kindnet cni
+```
+./bootstrap.sh with-kubeproxy kindnet
+```
+#### without-kubeproxy and cilium cni
+```
+./bootstrap.sh without-kubeproxy cilium
+```
 
 
-# UI Access (on local port 80)
+# UI Access
 ## hipster playground
 [demo.sre-playground.devops.nakednerds.net](http://demo.sre-playground.devops.nakednerds.net/)
 ## grafana
