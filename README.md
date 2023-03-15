@@ -100,6 +100,8 @@ entries:
 127.0.0.1 grafana.sre-playground.devops.nakednerds.net
 127.0.0.1 prometheus.sre-playground.devops.nakednerds.net
 127.0.0.1 chaostest.sre-playground.devops.nakednerds.net
+127.0.0.1 hubble.sre-playground.devops.nakednerds.net
+127.0.0.1 jaeger.sre-playground.devops.nakednerds.net
 ```
 
 ### 2. Clone the repo in local
@@ -125,6 +127,8 @@ entries:
 # UI Access
 ## hipster playground
 [demo.sre-playground.devops.nakednerds.net](http://demo.sre-playground.devops.nakednerds.net/)
+## topology dashboard (hubble)
+[hubble.sre-playground.devops.nakednerds.net](http://hubble.sre-playground.devops.nakednerds.net/)
 ## grafana
 [grafana.sre-playground.devops.nakednerds.net](http://grafana.sre-playground.devops.nakednerds.net/)
 ```
@@ -136,7 +140,7 @@ Password: prom-operator
 ## loadtest
 [demo.sre-playground.devops.nakednerds.net/loadgen/](http://demo.sre-playground.devops.nakednerds.net/loadgen/)
 ## tracing: jaeger
-[demo.sre-playground.devops.nakednerds.net/jaeger/](http://demo.sre-playground.devops.nakednerds.net/jaeger/ui/)
+[jaeger.sre-playground.devops.nakednerds.net/jaeger/](http://jaeger.sre-playground.devops.nakednerds.net/)
 ## chaos-mesh
 [chaostest.sre-playground.devops.nakednerds.net](http://chaostest.sre-playground.devops.nakednerds.net/)
 ```
