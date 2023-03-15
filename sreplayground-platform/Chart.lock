@@ -14,8 +14,11 @@ dependencies:
 - name: metrics-server
   repository: https://kubernetes-sigs.github.io/metrics-server/
   version: 3.8.4
-- name: opentelemetry-operator
+- name: opentelemetry-collector
   repository: https://open-telemetry.github.io/opentelemetry-helm-charts
-  version: 0.24.1
-digest: sha256:8f6c7b4ecbf3678367c1d9d3767663bc0fd73cc108475d60d2a988954cd6bca2
-generated: "2023-03-13T09:36:15.24008+01:00"
+  version: 0.49.3
+- name: jaeger-operator
+  repository: https://jaegertracing.github.io/helm-charts
+  version: 2.41.0
+digest: sha256:0023ccd69aa6fd0e8b085a7c1ca7d109f28e05f9f559645d5dd5ae985d465493
+generated: "2023-03-14T13:47:04.656739+01:00"

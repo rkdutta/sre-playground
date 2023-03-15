@@ -3,7 +3,7 @@ set -eo pipefail
 
 
 # install netcat, apache,git and kubectl
-sudo apt update && sudo apt install -y netcat apache2 kubectl git yq
+sudo apt update && sudo apt install -y netcat apache2 kubectl git
 
 # install helm
 curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | sudo tee /usr/share/keyrings/helm.gpg > /dev/null
@@ -13,8 +13,8 @@ sudo apt-get update
 sudo apt-get install helm
 
 # install kind
-curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.17.0/kind-linux-amd64
-chmod +x ./kind
+sudo curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.17.0/kind-linux-amd64
+sudo chmod +x ./kind
 sudo mv ./kind /usr/local/bin/kind
 
 
@@ -24,6 +24,8 @@ sudo mv ./kind /usr/local/bin/kind
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 sudo apt-get install build-essential
 
+sudo wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
+sudo chmod a+x /usr/local/bin/yq
 
 # install docker
 

@@ -32,8 +32,13 @@ CLUSTER_NAME=${3:-"sre-playground"}
 
 KIND_CONFIG_FILE=`mktemp`
 OVERRIDE_CONFIG_FILE=`mktemp`
+PLAYGROUND_CONFIG_FILE=`mktemp`
+
 CPU_ARCH="$(uname -m)"
-PLAYGROUND_CONFIG_FILE="kind/bootstrap-config.yaml"
+PLAYGROUND_CONFIG_FILE_URI="kind/bootstrap-config.yaml"
+
+# reading the raw bootstrap config file and resolve the aliases
+yq 'explode(.)' $PLAYGROUND_CONFIG_FILE_URI > $PLAYGROUND_CONFIG_FILE
 
 # reading kind cluster common configuration
 yq .common-config.$CPU_ARCH $PLAYGROUND_CONFIG_FILE > $KIND_CONFIG_FILE
@@ -64,7 +69,8 @@ echo "`date` >>>>> METALLB_IP_RANGE:$METALLB_IP_RANGE"
 
 # install cluster
 yq .override-config.$KUBEPROXY_OPTS.$CNI.cni-patch $PLAYGROUND_CONFIG_FILE > $OVERRIDE_CONFIG_FILE
-echo "`date` >>>>> OVERRIDE_CONFIG_FILE:$OVERRIDE_CONFIG_FILE"
+
+#install the cluster
 helm dependency update sreplayground-cluster
 helm upgrade --install sreplayground-cluster sreplayground-cluster \
 --dependency-update   \
@@ -87,7 +93,7 @@ helm upgrade --install  sreplayground-platform sreplayground-platform \
 --create-namespace \
 --dependency-update \
 --wait
- 
+
 
 # install app
 kubectl create namespace app --dry-run=client -o yaml | kubectl apply -f -
