@@ -16,7 +16,7 @@ ingress:
           pathType: Prefix
           backend:
             service:
-              name: sreplayground-app-frontendproxy
+              name: sreplayground-hipster-app-frontendproxy
               port: 
                 number: 8080
       host: "demo.sre-playground.devops.nakednerds.net"
@@ -24,7 +24,7 @@ ingress:
         paths:
         - backend:
             service:
-              name: sreplayground-app-otelcol
+              name: sreplayground-hipster-app-otelcol
               port:
                 number: 4318
           path: /v1/traces
@@ -36,7 +36,7 @@ ingress:
           pathType: Prefix
           backend:
             service:
-              name: sreplayground-app-dark-index-page
+              name: sreplayground-hipster-app-dark-index-page
               port: 
                 number: 8080
       host: "sre-playground.devops.nakednerds.net"

@@ -97,7 +97,7 @@ helm upgrade --install  sreplayground-platform sreplayground-platform \
 
 # install app
 kubectl create namespace app --dry-run=client -o yaml | kubectl apply -f -
-helm upgrade --install  sreplayground-app sreplayground-app \
+helm upgrade --install  sreplayground-hipster-app sreplayground-hipster-app \
 --dependency-update \
 --namespace app \
 --create-namespace
