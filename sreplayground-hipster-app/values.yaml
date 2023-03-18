@@ -8,7 +8,7 @@ ingress:
   className: "nginx"
   annotations: {}
   components:
-  - name: opentelemetry-demo
+  - name: hipstershop
     rules:
     - http:
         paths:
@@ -16,7 +16,7 @@ ingress:
           pathType: Prefix
           backend:
             service:
-              name: sreplayground-hipster-app-frontendproxy
+              name: sreplayground-hipstershop-frontendproxy
               port: 
                 number: 8080
       host: "hipstershop.sre-playground.devops.nakednerds.net"
@@ -24,7 +24,7 @@ ingress:
         paths:
         - backend:
             service:
-              name: sreplayground-hipster-app-otelcol
+              name: sreplayground-hipstershop-otelcol
               port:
                 number: 4318
           path: /v1/traces
@@ -36,7 +36,7 @@ ingress:
           pathType: Prefix
           backend:
             service:
-              name: sreplayground-hipster-app-dark-index-page
+              name: sreplayground-hipstershop-dark-index-page
               port: 
                 number: 8080
       host: "sre-playground.devops.nakednerds.net"

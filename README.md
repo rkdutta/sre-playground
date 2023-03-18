@@ -20,7 +20,8 @@ E2E solution runs in local k8 clusters provisioned with kind.
           - [x] x86_64
           - [x] arm64
 ### Demo Application
-- [x] [hipster](/apps/hipster-shop-app/) ([chart-source](https://github.com/open-telemetry/opentelemetry-demo))
+- [x] [hipstershop](/sreplayground-hipstershop/Chart.yaml) (https://github.com/open-telemetry/opentelemetry-demo)
+- [x] [simpleapp](/sreplayground-simpleapp/Chart.yaml)
 ### Logging
 - [x] fluent-bit :arrow_right: Loki
     - [x] with kube-proxy
