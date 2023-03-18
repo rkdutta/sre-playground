@@ -1,8 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: {{ .Release.Name }}-dark-index-page
-  namespace: {{ .Release.Namespace }}   
-data:
-   index.html: |-
-{{ .Files.Get "files/index.html" | indent 4}}
