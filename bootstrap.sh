@@ -71,8 +71,9 @@ echo "`date` >>>>> METALLB_IP_RANGE:$METALLB_IP_RANGE"
 yq .override-config.$KUBEPROXY_OPTS.$CNI.cni-patch $PLAYGROUND_CONFIG_FILE > $OVERRIDE_CONFIG_FILE
 
 #install the cluster
-helm dependency update sreplayground-cluster
-helm upgrade --install sreplayground-cluster sreplayground-cluster \
+DEPLOYMENT=sreplayground-cluster
+helm dependency update $DEPLOYMENT
+helm upgrade --install $DEPLOYMENT $DEPLOYMENT \
 --dependency-update   \
 --namespace kube-system \
 --set metallb.addresspool=$METALLB_IP_RANGE --wait \
@@ -86,31 +87,35 @@ helm upgrade --install sreplayground-cluster sreplayground-cluster \
 #(cd istio && ./istio.sh)
 
 # install platform components
-kubectl create namespace platform --dry-run=client -o yaml | kubectl apply -f -
-helm dependency update sreplayground-platform
-helm upgrade --install  sreplayground-platform sreplayground-platform \
---namespace platform \
+DEPLOYMENT=sreplayground-platform
+kubectl create namespace $DEPLOYMENT --dry-run=client -o yaml | kubectl apply -f -
+helm dependency update $DEPLOYMENT
+helm upgrade --install  $DEPLOYMENT $DEPLOYMENT \
+--namespace $DEPLOYMENT \
 --create-namespace \
---dependency-update \
 --wait
 
 
-# install app
-kubectl create namespace app --dry-run=client -o yaml | kubectl apply -f -
-helm upgrade --install  sreplayground-hipstershop sreplayground-hipstershop \
---dependency-update \
---namespace app \
+# install hipstershop
+DEPLOYMENT=sreplayground-hipstershop
+kubectl create namespace $DEPLOYMENT --dry-run=client -o yaml | kubectl apply -f -
+helm upgrade --install  $DEPLOYMENT $DEPLOYMENT \
+--namespace $DEPLOYMENT \
 --create-namespace
 
 
 # install testing
-kubectl create namespace testing --dry-run=client -o yaml | kubectl apply -f -
-helm dependency update sreplayground-testing
-helm upgrade --install  sreplayground-testing sreplayground-testing \
---dependency-update \
---namespace testing \
---create-namespace
+# kubectl create namespace testing --dry-run=client -o yaml | kubectl apply -f -
+# helm dependency update sreplayground-testing
+# helm upgrade --install  sreplayground-testing sreplayground-testing \
+# --namespace testing \
+# --create-namespace
 
+DEPLOYMENT=sreplayground-testing
+kubectl create namespace $DEPLOYMENT --dry-run=client -o yaml | kubectl apply -f -
+helm upgrade --install  $DEPLOYMENT $DEPLOYMENT \
+--namespace $DEPLOYMENT \
+--create-namespace
 
 echo "SUCCESS.."
 
