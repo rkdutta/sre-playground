@@ -97,7 +97,7 @@ There are two options here (Option 1.1 & 1.2). First using [DNSMASQ](https://the
 ```
 command: sudo vi /etc/hosts
 entries:
-127.0.0.1 demo.sre-playground.devops.nakednerds.net
+127.0.0.1 hipstershop.sre-playground.devops.nakednerds.net
 127.0.0.1 grafana.sre-playground.devops.nakednerds.net
 127.0.0.1 prometheus.sre-playground.devops.nakednerds.net
 127.0.0.1 chaostest.sre-playground.devops.nakednerds.net
@@ -127,7 +127,7 @@ entries:
 
 # UI Access
 ## hipster playground
-[demo.sre-playground.devops.nakednerds.net](http://demo.sre-playground.devops.nakednerds.net/)
+[hipstershop.sre-playground.devops.nakednerds.net](http://hipstershop.sre-playground.devops.nakednerds.net/)
 ## topology dashboard (hubble)
 [hubble.sre-playground.devops.nakednerds.net](http://hubble.sre-playground.devops.nakednerds.net/)
 ## grafana
@@ -139,7 +139,7 @@ Password: prom-operator
 ## prometheus
 [prometheus.sre-playground.devops.nakednerds.net](http://prometheus.sre-playground.devops.nakednerds.net/)
 ## loadtest
-[demo.sre-playground.devops.nakednerds.net/loadgen/](http://demo.sre-playground.devops.nakednerds.net/loadgen/)
+[hipstershop.sre-playground.devops.nakednerds.net/loadgen/](http://hipstershop.sre-playground.devops.nakednerds.net/loadgen/)
 ## tracing: jaeger
 [jaeger.sre-playground.devops.nakednerds.net/jaeger/](http://jaeger.sre-playground.devops.nakednerds.net/)
 ## chaos-mesh

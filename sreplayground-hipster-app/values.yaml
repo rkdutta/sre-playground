@@ -19,7 +19,7 @@ ingress:
               name: sreplayground-hipster-app-frontendproxy
               port: 
                 number: 8080
-      host: "demo.sre-playground.devops.nakednerds.net"
+      host: "hipstershop.sre-playground.devops.nakednerds.net"
     - http:
         paths:
         - backend:
