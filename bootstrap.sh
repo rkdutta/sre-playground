@@ -25,9 +25,9 @@ waitForReadiness(){
 # ///////////////////////////////////////////////////////////////////////////////////////
 
 
-KUBEPROXY_OPTS=${1:-"with-kubeproxy"}
+KUBEPROXY_OPTS=${3:-"with-kubeproxy"}
 CNI=${2:-"cilium"}
-CLUSTER_NAME=${3:-"sre-playground"}
+CLUSTER_NAME=${1:-"sre-playground"}
 
 
 KIND_CONFIG_FILE=`mktemp`
@@ -72,10 +72,12 @@ yq .override-config.$KUBEPROXY_OPTS.$CNI.cni-patch $PLAYGROUND_CONFIG_FILE > $OV
 
 #install the cluster
 DEPLOYMENT=sreplayground-cluster
+RELEASE=$CLUSTER_NAME-cluster
+kubectl create namespace $RELEASE --dry-run=client -o yaml | kubectl apply -f -
 helm dependency update $DEPLOYMENT
-helm upgrade --install $DEPLOYMENT $DEPLOYMENT \
+helm upgrade --install $RELEASE $DEPLOYMENT \
 --dependency-update   \
---namespace kube-system \
+--namespace $RELEASE \
 --set metallb.addresspool=$METALLB_IP_RANGE --wait \
 --set $CNI.enabled=true \
 --set cilium.k8sServiceHost=$CLUSTER_NAME-control-plane \
@@ -85,22 +87,24 @@ helm upgrade --install $DEPLOYMENT $DEPLOYMENT \
 # TO BE DISCUSSED BEFORE ENABLING ISTIO
 #install istio and kiali 
 #(cd istio && ./istio.sh)
-
+exit
 # install platform components
 DEPLOYMENT=sreplayground-platform
-kubectl create namespace $DEPLOYMENT --dry-run=client -o yaml | kubectl apply -f -
+RELEASE=$CLUSTER_NAME-platform
+kubectl create namespace $RELEASE --dry-run=client -o yaml | kubectl apply -f -
 helm dependency update $DEPLOYMENT
-helm upgrade --install  $DEPLOYMENT $DEPLOYMENT \
---namespace $DEPLOYMENT \
+helm upgrade --install  $RELEASE $DEPLOYMENT \
+--namespace $RELEASE \
 --create-namespace \
 --wait
 
-
+exit
 # install hipstershop
 DEPLOYMENT=sreplayground-hipstershop
-kubectl create namespace $DEPLOYMENT --dry-run=client -o yaml | kubectl apply -f -
-helm upgrade --install  $DEPLOYMENT $DEPLOYMENT \
---namespace $DEPLOYMENT \
+RELEASE=$CLUSTER_NAME-hipstershop
+kubectl create namespace $RELEASE --dry-run=client -o yaml | kubectl apply -f -
+helm upgrade --install  $RELEASE $DEPLOYMENT \
+--namespace $RELEASE \
 --create-namespace
 
 
@@ -110,11 +114,12 @@ helm upgrade --install  $DEPLOYMENT $DEPLOYMENT \
 # helm upgrade --install  sreplayground-testing sreplayground-testing \
 # --namespace testing \
 # --create-namespace
-
+exit
 DEPLOYMENT=sreplayground-testing
-kubectl create namespace $DEPLOYMENT --dry-run=client -o yaml | kubectl apply -f -
-helm upgrade --install  $DEPLOYMENT $DEPLOYMENT \
---namespace $DEPLOYMENT \
+RELEASE=$CLUSTER_NAME-testing
+kubectl create namespace $RELEASE --dry-run=client -o yaml | kubectl apply -f -
+helm upgrade --install  $RELEASE $DEPLOYMENT \
+--namespace $RELEASE \
 --create-namespace
 
 echo "SUCCESS.."
