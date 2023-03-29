@@ -82,7 +82,8 @@ helm upgrade --install $RELEASE $DEPLOYMENT \
 --set $CNI.enabled=true \
 --set cilium.k8sServiceHost=$CLUSTER_NAME-control-plane \
 --set cilium.ipMasqAgent.enabled=$(yq .ipMasqAgent.enabled $OVERRIDE_CONFIG_FILE) \
---set cilium.kubeProxyReplacement=$(yq .kubeProxyReplacement $OVERRIDE_CONFIG_FILE)
+--set cilium.kubeProxyReplacement=$(yq .kubeProxyReplacement $OVERRIDE_CONFIG_FILE) \
+--set cilium.hubble.ui.ingress.hosts[0]="hubble.$CLUSTER_NAME.devops.nakednerds.net"
 
 # TO BE DISCUSSED BEFORE ENABLING ISTIO
 #install istio and kiali 
