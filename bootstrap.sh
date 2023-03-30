@@ -99,10 +99,13 @@ helm dependency update $DEPLOYMENT
 helm upgrade --install  $RELEASE $DEPLOYMENT \
 --namespace $RELEASE \
 --create-namespace \
+--set global.clusterName=$CLUSTER_NAME \
 --set jaeger-operator.clusterName=$CLUSTER_NAME \
 --set kube-prometheus-stack.grafana.ingress.hosts[0]="grafana.$CLUSTER_NAME.devops.nakednerds.net" \
 --set kube-prometheus-stack.prometheus.ingress.hosts[0]="prometheus.$CLUSTER_NAME.devops.nakednerds.net" \
 --set kube-prometheus-stack.prometheus.prometheusSpec.thanos.objectStorageConfig.name="$RELEASE-thanos-storage-connection-string" \
+--set kube-prometheus-stack.prometheus.prometheusSpec.externalLabels.cluster_name="$CLUSTER_NAME" \
+--set-file thanos.objstoreConfig=sreplayground-platform/files/thanos-storage-config.yaml \
 --wait
 
 

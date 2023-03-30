@@ -2,6 +2,9 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+global:
+  clusterName: ""
+
 ingress-nginx:
   enabled: true
   controller:
@@ -115,6 +118,12 @@ thanos:
       enabled: true
       sidecarsService: "prometheus-operated"
       sidecarsNamespace: "{{ .Release.Namespace }}"
+  receive: 
+    enabled: true
+  storegateway:
+    enabled: true
+  objstoreConfig: ""
+
 kube-prometheus-stack:
   enabled: true
   prometheus:
