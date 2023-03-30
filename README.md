@@ -114,15 +114,15 @@ entries:
 ### 3. Execute the installtion script
 #### with-kubeproxy and cilium cni (default)
 ```
-./bootstrap.sh
+./bootstrap.sh <cluster-name> <CNI> <w/o kube-proxy>
 ```
 #### with-kubeproxy and kindnet cni
 ```
-./bootstrap.sh with-kubeproxy kindnet
+./bootstrap.sh sre-playground kindnet with-kubeproxy
 ```
 #### without-kubeproxy and cilium cni
 ```
-./bootstrap.sh without-kubeproxy cilium
+./bootstrap.sh sre-playground cilium without-kubeproxy
 ```
 
 
