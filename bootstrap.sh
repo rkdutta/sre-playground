@@ -77,13 +77,15 @@ kubectl create namespace $RELEASE --dry-run=client -o yaml | kubectl apply -f -
 helm dependency update $DEPLOYMENT
 helm upgrade --install $RELEASE $DEPLOYMENT \
 --dependency-update   \
---namespace $RELEASE \
+--namespace kube-system \
 --set metallb.addresspool=$METALLB_IP_RANGE --wait \
 --set $CNI.enabled=true \
 --set cilium.k8sServiceHost=$CLUSTER_NAME-control-plane \
 --set cilium.ipMasqAgent.enabled=$(yq .ipMasqAgent.enabled $OVERRIDE_CONFIG_FILE) \
 --set cilium.kubeProxyReplacement=$(yq .kubeProxyReplacement $OVERRIDE_CONFIG_FILE) \
---set cilium.hubble.ui.ingress.hosts[0]="hubble.$CLUSTER_NAME.devops.nakednerds.net"
+--set cilium.hubble.ui.ingress.hosts[0]="hubble.$CLUSTER_NAME.devops.nakednerds.net" \
+--set opentelemetry-collector.config.exporters.otlp.endpoint="$CLUSTER_NAME-platform-otel-collector-hub.$CLUSTER_NAME-platform.svc.cluster.local:4317"
+
 
 # TO BE DISCUSSED BEFORE ENABLING ISTIO
 #install istio and kiali 
@@ -113,8 +115,8 @@ helm upgrade --install  $RELEASE $DEPLOYMENT \
 --set opentelemetry-demo.components.frontendProxy.ingress.hosts[0].host="hipstershop.$CLUSTER_NAME.devops.nakednerds.net" \
 --set opentelemetry-demo.components.frontendProxy.ingress.hosts[0].paths[0].path="/" \
 --set opentelemetry-demo.components.frontendProxy.ingress.hosts[0].paths[0].pathType="Prefix" \
---set opentelemetry-demo.components.frontendProxy.ingress.hosts[0].paths[0].port="8080"
-
+--set opentelemetry-demo.components.frontendProxy.ingress.hosts[0].paths[0].port="8080" \
+--set opentelemetry-demo.opentelemetry-collector.config.exporters.otlp.endpoint="$CLUSTER_NAME-platform-otel-collector-hub.$CLUSTER_NAME-platform.svc.cluster.local:4317"
 
 # install testing
 DEPLOYMENT=sreplayground-testing

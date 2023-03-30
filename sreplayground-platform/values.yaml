@@ -286,7 +286,7 @@ opentelemetry-collector:
     exporters:
       logging: {}
       otlp:
-        endpoint: '{{ .Release.Name }}-platform-jaeger-collector.platform.svc.cluster.local:4317'
+        endpoint: '{{ .Release.Name }}-jaeger-collector.{{ .Release.Name }}.svc.cluster.local:4317'
         tls: 
           insecure: true
     extensions:

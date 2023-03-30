@@ -82,7 +82,7 @@ opentelemetry-collector:
     exporters:
       logging: {}
       otlp:
-        endpoint: '{{ .Release.Name }}-platform-otel-collector-hub.platform.svc.cluster.local:4317'
+        endpoint: ''
         tls: 
           insecure: true
     extensions:

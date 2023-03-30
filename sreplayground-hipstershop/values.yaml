@@ -10,16 +10,16 @@ ingress:
   components:
   - name: hipstershop
     rules:
-    - http:
-        paths:
-        - path: /
-          pathType: Prefix
-          backend:
-            service:
-              name: sreplayground-hipstershop-frontendproxy
-              port: 
-                number: 8080
-      host: "hipstershop.sre-playground.devops.nakednerds.net"
+    # - http:
+    #     paths:
+    #     - path: /
+    #       pathType: Prefix
+    #       backend:
+    #         service:
+    #           name: sreplayground-hipstershop-frontendproxy
+    #           port: 
+    #             number: 8080
+    #   host: "hipstershop.sre-playground.devops.nakednerds.net"
     - http:
         paths:
         - backend:
@@ -129,4 +129,4 @@ opentelemetry-demo:
     config:
       exporters:
         otlp:
-          endpoint: "{{ .Release.Name }}-platform-otel-collector-hub.{{ .Release.Name }}.svc.cluster.local:4317"
+          endpoint: ""
