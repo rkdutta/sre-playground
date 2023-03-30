@@ -88,7 +88,7 @@ helm upgrade --install $RELEASE $DEPLOYMENT \
 # TO BE DISCUSSED BEFORE ENABLING ISTIO
 #install istio and kiali 
 #(cd istio && ./istio.sh)
-exit
+
 # install platform components
 DEPLOYMENT=sreplayground-platform
 RELEASE=$CLUSTER_NAME-platform
@@ -97,31 +97,33 @@ helm dependency update $DEPLOYMENT
 helm upgrade --install  $RELEASE $DEPLOYMENT \
 --namespace $RELEASE \
 --create-namespace \
+--set kube-prometheus-stack.grafana.ingress.hosts[0]="grafana.$CLUSTER_NAME.devops.nakednerds.net" \
+--set kube-prometheus-stack.prometheus.ingress.hosts[0]="prometheus.$CLUSTER_NAME.devops.nakednerds.net" \
 --wait
 
-exit
+
 # install hipstershop
 DEPLOYMENT=sreplayground-hipstershop
 RELEASE=$CLUSTER_NAME-hipstershop
+helm dependency update $DEPLOYMENT
 kubectl create namespace $RELEASE --dry-run=client -o yaml | kubectl apply -f -
 helm upgrade --install  $RELEASE $DEPLOYMENT \
 --namespace $RELEASE \
---create-namespace
+--create-namespace \
+--set opentelemetry-demo.components.frontendProxy.ingress.hosts[0].host="hipstershop.$CLUSTER_NAME.devops.nakednerds.net" \
+--set opentelemetry-demo.components.frontendProxy.ingress.hosts[0].paths[0].path="/" \
+--set opentelemetry-demo.components.frontendProxy.ingress.hosts[0].paths[0].pathType="Prefix" \
+--set opentelemetry-demo.components.frontendProxy.ingress.hosts[0].paths[0].port="8080"
 
 
 # install testing
-# kubectl create namespace testing --dry-run=client -o yaml | kubectl apply -f -
-# helm dependency update sreplayground-testing
-# helm upgrade --install  sreplayground-testing sreplayground-testing \
-# --namespace testing \
-# --create-namespace
-exit
 DEPLOYMENT=sreplayground-testing
 RELEASE=$CLUSTER_NAME-testing
 kubectl create namespace $RELEASE --dry-run=client -o yaml | kubectl apply -f -
 helm upgrade --install  $RELEASE $DEPLOYMENT \
 --namespace $RELEASE \
---create-namespace
+--create-namespace \
+--set chaos-mesh.dashboard.ingress.hosts[0].name="chaostest.$CLUSTER_NAME.devops.nakednerds.net"
 
 echo "SUCCESS.."
 

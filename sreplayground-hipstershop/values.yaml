@@ -1,9 +1,9 @@
-# Default values for sreplayground.
+# Default values for playground.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
 ingress:
-  enabled: true
+  enabled: false
   class: nginx
   className: "nginx"
   annotations: {}
@@ -90,9 +90,18 @@ opentelemetry-demo:
       - name: FRONTEND_PORT
         value: "8080"
       - name: PUBLIC_OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
-        value: http://otel.sre-playground.devops.nakednerds.net/v1/traces
+        value: http://otel.{{ .Release.Name }}.devops.nakednerds.net/v1/traces
     frontendProxy:
       enabled: true
+      ingress:
+        enabled: true
+        ingressClassName: nginx
+        hosts: 
+        - host: hipstershop.devops.nakednerds.net
+          paths:
+          - path: /
+            pathType: Prefix
+            port: 8080
     kafka:
       enabled: true
     loadgenerator:
@@ -109,17 +118,15 @@ opentelemetry-demo:
       enabled: true
     shippingService:
       enabled: true
-  observability:
-    grafana:
-      enabled: false # The demo is using another grafana instance from prometheus community
-    jaeger:
-      enabled: false
-    otelcol:
-      enabled: true
-    prometheus:
-      enabled: false # The demo is using another prometheus instance from prometheus community
+  grafana:
+    enabled: false # The demo is using another grafana instance from prometheus community
+  jaeger:
+    enabled: false
+  prometheus:
+    enabled: false # The demo is using another prometheus instance from prometheus community
   opentelemetry-collector:
+    enabled: true
     config:
       exporters:
         otlp:
-          endpoint: sreplayground-platform-otel-collector-hub.platform.svc.cluster.local:4317
+          endpoint: "{{ .Release.Name }}-platform-otel-collector-hub.{{ .Release.Name }}.svc.cluster.local:4317"

@@ -12,5 +12,5 @@ appVersion: "1.16.0"
 dependencies:
   - name: opentelemetry-demo
     repository: https://open-telemetry.github.io/opentelemetry-helm-charts
-    version: 0.19.6
+    version: 0.20.0
     condition: opentelemetry-demo.enabled

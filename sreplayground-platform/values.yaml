@@ -2,6 +2,10 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+global:
+  clusterName: green
+
+
 ingress-nginx:
   enabled: true
   controller:
@@ -112,33 +116,6 @@ kube-prometheus-stack:
   prometheus:
     prometheusSpec:
       additionalScrapeConfigs:
-      # - job_name: 'kubernetes-endpoints'
-      #   scrape_interval: 30s
-      #   kubernetes_sd_configs:
-      #     - role: endpoints
-      #   relabel_configs:
-      #     - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_scrape]
-      #       action: keep
-      #       regex: true
-      #     - source_labels: [__address__, __meta_kubernetes_service_annotation_prometheus_io_port]
-      #       action: replace
-      #       target_label: __address__
-      #       regex: (.+)(?::\d+);(\d+)
-      #       replacement: $1:$2
-      # - job_name: 'kubernetes-pods'
-      #   kubernetes_sd_configs:
-      #   - role: pod
-      #   relabel_configs:
-      #     - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
-      #       action: keep
-      #       regex: true
-      #     - source_labels: [__address__, __meta_kubernetes_pod_annotation_prometheus_io_port]
-      #       action: replace
-      #       regex: (.+):(?:\d+);(\d+)
-      #       replacement: ${1}:${2}
-      #       target_label: __address__
-      
-      #       # https://github.com/prometheus/prometheus/blob/master/documentation/examples/prometheus-kubernetes.yml#L79
       - job_name: 'kubernetes-endpoints'
         kubernetes_sd_configs:
           - role: endpoints
@@ -265,7 +242,7 @@ kube-prometheus-stack:
       type: jaeger
       uid: webstore-traces
      # url: http://sreplayground-platform-jaeger-query.platform.svc:16686
-      url: https://{{ printf "%s-jaeger-query" .Release.Name }}:16686
+      url: http://{{ printf "%s-jaeger-query" .Release.Name }}:16686
     - name: Loki
       editable: false
       type: loki
