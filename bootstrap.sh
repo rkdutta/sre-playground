@@ -25,9 +25,9 @@ waitForReadiness(){
 # ///////////////////////////////////////////////////////////////////////////////////////
 
 
-KUBEPROXY_OPTS=${1:-"with-kubeproxy"}
+KUBEPROXY_OPTS=${3:-"with-kubeproxy"}
 CNI=${2:-"cilium"}
-CLUSTER_NAME=${3:-"sre-playground"}
+CLUSTER_NAME=${1:-"sre-playground"}
 
 
 KIND_CONFIG_FILE=`mktemp`
@@ -72,15 +72,20 @@ yq .override-config.$KUBEPROXY_OPTS.$CNI.cni-patch $PLAYGROUND_CONFIG_FILE > $OV
 
 #install the cluster
 DEPLOYMENT=sreplayground-cluster
+RELEASE=$CLUSTER_NAME-cluster
+kubectl create namespace $RELEASE --dry-run=client -o yaml | kubectl apply -f -
 helm dependency update $DEPLOYMENT
-helm upgrade --install $DEPLOYMENT $DEPLOYMENT \
+helm upgrade --install $RELEASE $DEPLOYMENT \
 --dependency-update   \
 --namespace kube-system \
 --set metallb.addresspool=$METALLB_IP_RANGE --wait \
 --set $CNI.enabled=true \
 --set cilium.k8sServiceHost=$CLUSTER_NAME-control-plane \
 --set cilium.ipMasqAgent.enabled=$(yq .ipMasqAgent.enabled $OVERRIDE_CONFIG_FILE) \
---set cilium.kubeProxyReplacement=$(yq .kubeProxyReplacement $OVERRIDE_CONFIG_FILE)
+--set cilium.kubeProxyReplacement=$(yq .kubeProxyReplacement $OVERRIDE_CONFIG_FILE) \
+--set cilium.hubble.ui.ingress.hosts[0]="hubble.$CLUSTER_NAME.devops.nakednerds.net" \
+--set opentelemetry-collector.config.exporters.otlp.endpoint="$CLUSTER_NAME-platform-otel-collector-hub.$CLUSTER_NAME-platform.svc.cluster.local:4317"
+
 
 # TO BE DISCUSSED BEFORE ENABLING ISTIO
 #install istio and kiali 
@@ -88,34 +93,53 @@ helm upgrade --install $DEPLOYMENT $DEPLOYMENT \
 
 # install platform components
 DEPLOYMENT=sreplayground-platform
-kubectl create namespace $DEPLOYMENT --dry-run=client -o yaml | kubectl apply -f -
+RELEASE=$CLUSTER_NAME-platform
+kubectl create namespace $RELEASE --dry-run=client -o yaml | kubectl apply -f -
 helm dependency update $DEPLOYMENT
-helm upgrade --install  $DEPLOYMENT $DEPLOYMENT \
---namespace $DEPLOYMENT \
+helm upgrade --install  $RELEASE $DEPLOYMENT \
+--namespace $RELEASE \
 --create-namespace \
+--set jaeger-operator.clusterName=$CLUSTER_NAME \
+--set kube-prometheus-stack.grafana.ingress.hosts[0]="grafana.$CLUSTER_NAME.devops.nakednerds.net" \
+--set kube-prometheus-stack.prometheus.ingress.hosts[0]="prometheus.$CLUSTER_NAME.devops.nakednerds.net" \
+--set kube-prometheus-stack.prometheus.prometheusSpec.thanos.objectStorageConfig.name="$RELEASE-thanos-storage-connection-string" \
 --wait
 
 
 # install hipstershop
 DEPLOYMENT=sreplayground-hipstershop
-kubectl create namespace $DEPLOYMENT --dry-run=client -o yaml | kubectl apply -f -
-helm upgrade --install  $DEPLOYMENT $DEPLOYMENT \
---namespace $DEPLOYMENT \
---create-namespace
-
+RELEASE=$CLUSTER_NAME-hipstershop
+helm dependency update $DEPLOYMENT
+kubectl create namespace $RELEASE --dry-run=client -o yaml | kubectl apply -f -
+helm upgrade --install  $RELEASE $DEPLOYMENT \
+--namespace $RELEASE \
+--create-namespace \
+--set opentelemetry-demo.components.frontendProxy.ingress.hosts[0].host="hipstershop.$CLUSTER_NAME.devops.nakednerds.net" \
+--set opentelemetry-demo.components.frontendProxy.ingress.hosts[0].paths[0].path="/" \
+--set opentelemetry-demo.components.frontendProxy.ingress.hosts[0].paths[0].pathType="Prefix" \
+--set opentelemetry-demo.components.frontendProxy.ingress.hosts[0].paths[0].port="8080" \
+--set opentelemetry-demo.opentelemetry-collector.config.exporters.otlp.endpoint="$CLUSTER_NAME-platform-otel-collector-hub.$CLUSTER_NAME-platform.svc.cluster.local:4317" \
+--set ingress.components[0].name="index-page" \
+--set ingress.components[0].rules[0].host="$CLUSTER_NAME.devops.nakednerds.net" \
+--set ingress.components[0].rules[0].http.paths[0].path="/" \
+--set ingress.components[0].rules[0].http.paths[0].pathType="Prefix" \
+--set ingress.components[0].rules[0].http.paths[0].backend.service.name="$RELEASE-dark-index-page" \
+--set ingress.components[0].rules[0].http.paths[0].backend.service.port.number="8080" \
+--set ingress.components[1].name="otel" \
+--set ingress.components[1].rules[0].host="otel.$RELEASE.devops.nakednerds.net" \
+--set ingress.components[1].rules[0].http.paths[0].path="/v1/traces" \
+--set ingress.components[1].rules[0].http.paths[0].pathType="Prefix" \
+--set ingress.components[1].rules[0].http.paths[0].backend.service.name="$RELEASE-otelcol" \
+--set ingress.components[1].rules[0].http.paths[0].backend.service.port.number="4318" 
 
 # install testing
-# kubectl create namespace testing --dry-run=client -o yaml | kubectl apply -f -
-# helm dependency update sreplayground-testing
-# helm upgrade --install  sreplayground-testing sreplayground-testing \
-# --namespace testing \
-# --create-namespace
-
 DEPLOYMENT=sreplayground-testing
-kubectl create namespace $DEPLOYMENT --dry-run=client -o yaml | kubectl apply -f -
-helm upgrade --install  $DEPLOYMENT $DEPLOYMENT \
---namespace $DEPLOYMENT \
---create-namespace
+RELEASE=$CLUSTER_NAME-testing
+kubectl create namespace $RELEASE --dry-run=client -o yaml | kubectl apply -f -
+helm upgrade --install  $RELEASE $DEPLOYMENT \
+--namespace $RELEASE \
+--create-namespace \
+--set chaos-mesh.dashboard.ingress.hosts[0].name="chaostest.$CLUSTER_NAME.devops.nakednerds.net"
 
 echo "SUCCESS.."
 

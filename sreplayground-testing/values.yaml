@@ -3,7 +3,7 @@
 # Declare variables to be passed into your templates.
 
 ingress:
-  enabled: true
+  enabled: false
   className: "nginx"
   annotations: {}
   components:
@@ -31,3 +31,10 @@ chaos-mesh:
     image:
       tag: "v2.5.1"
     securityMode: false
+    ingress:
+      enabled: true
+      hosts:
+      - name: chaostest.local
+      ingressClassName: "nginx"
+      paths:
+      - /

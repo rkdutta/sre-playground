@@ -1,4 +1,4 @@
-# Default values for sreplayground.
+# Default values for playground.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
@@ -8,45 +8,7 @@ ingress-nginx:
     image:
       tag: "v1.6.4"
 ingress:
-  enabled: true
-  className: "nginx"
-  annotations: {}
-  components:
-  - name: jaeger-query
-    rules:
-    - http:
-        paths:
-        - path: /
-          pathType: Prefix
-          backend:
-            service:
-              name: sreplayground-platform-jaeger-query
-              port: 
-                name: http-query
-      host: "jaeger.sre-playground.devops.nakednerds.net"
-  - name: prometheus
-    rules:
-    - http:
-        paths:
-        - path: /
-          pathType: Prefix
-          backend:
-            service:
-              name: sreplayground-platform-kub-prometheus
-              port: 
-                number: 9090
-      host: "prometheus.sre-playground.devops.nakednerds.net"
-    - http:
-        paths:
-        - path: /
-          pathType: Prefix
-          backend:
-            service:
-              name: sreplayground-platform-grafana
-              port: 
-                number: 80
-      host: "grafana.sre-playground.devops.nakednerds.net"
-
+  enabled: false
 loki-stack:
   loki:
     enabled: true
@@ -144,114 +106,30 @@ fluent-bit:
   tolerations:
   - key: node-role.kubernetes.io/control-plane
     operator: "Exists"
-  
-  
-  # grafana:
-  #   image:
-  #     tag: "9.3.6"
-  #   adminPassword: admin-operator
-  #   adminUser: admin
-  #   additionalDataSources:
-  #   - editable: false
-  #     isDefault: false
-  #     name: Jaeger
-  #     type: jaeger
-  #     uid: webstore-traces
-  #     url: http://sreplayground-platform-jaeger-query.default.svc:16686/jaeger/ui
-  #   - access: proxy
-  #     editable: false
-  #     isDefault: false
-  #     jsonData:
-  #       derivedFields:
-  #       - datasourceUid: Jaeger
-  #         matcherRegex: trace_id=(\w+)
-  #         name: TraceID
-  #         url: $${__value.raw}
-  #     name: Loki
-  #     type: loki
-  #     url: http://sreplayground-platform-loki.default.svc:3100
-  #     version: 1
 
-# sadasdsad:
-#   alertmanager:
-#     alertmanagerSpec:
-#       image:
-#         tag: v0.25.0
-#   grafana:
-#     image:
-#       tag: "9.3.6"
-#     adminPassword: admin
-#     adminUser: admin
-#     additionalDataSources:
-#         - editable: false
-#           isDefault: false
-#           name: Jaeger
-#           type: jaeger
-#           uid: webstore-traces
-#           url: http://sreplayground-platform-jaeger-query.default.svc:16686/jaeger/ui
-#         - name: Loki
-#           editable: false
-#           type: loki
-#           access: proxy
-#           url: "http://sreplayground-platform-loki.default.svc:3100"
-#           version: 1
-#           isDefault: false
-#           jsonData:
-#             derivedFields:
-#             - datasourceUid: Jaeger
-#               matcherRegex: "trace_id=(\\w+)"
-#               name: TraceID
-#               url: "$${__value.raw}"
-#   nodeExporter:
-#     enabled: true
-#   prometheus:
-#     image:
-#       tag: "v2.42.0"
-#     prometheusSpec:
-#       additionalScrapeConfigs:
-#       - job_name: opentelemetry-community-demo
-#         static_configs:
-#         - targets:
-#           - 'app-hipster-shop-otelcol.default.svc:9464'
-#   kube-state-metrics:
-#     image:
-#       tag: "v2.8.0"
-#   prometheusOperator:
-#     image:
-#       tag: "v0.63.0"
-
+thanos:
+  enabled: true
+  query:
+    enabled: true
+    dnsDiscovery:
+      enabled: true
+      sidecarsService: "prometheus-operated"
+      sidecarsNamespace: "{{ .Release.Namespace }}"
 kube-prometheus-stack:
   enabled: true
   prometheus:
+    thanosService:
+      enabled: true
+    thanosServiceMonitor:
+      enabled: true
     prometheusSpec:
+      thanos:
+        baseImage: quay.io/thanos/thanos
+        version: v0.24.0
+        objectStorageConfig:
+          key: thanos.yaml
+          name: ""
       additionalScrapeConfigs:
-      # - job_name: 'kubernetes-endpoints'
-      #   scrape_interval: 30s
-      #   kubernetes_sd_configs:
-      #     - role: endpoints
-      #   relabel_configs:
-      #     - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_scrape]
-      #       action: keep
-      #       regex: true
-      #     - source_labels: [__address__, __meta_kubernetes_service_annotation_prometheus_io_port]
-      #       action: replace
-      #       target_label: __address__
-      #       regex: (.+)(?::\d+);(\d+)
-      #       replacement: $1:$2
-      # - job_name: 'kubernetes-pods'
-      #   kubernetes_sd_configs:
-      #   - role: pod
-      #   relabel_configs:
-      #     - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
-      #       action: keep
-      #       regex: true
-      #     - source_labels: [__address__, __meta_kubernetes_pod_annotation_prometheus_io_port]
-      #       action: replace
-      #       regex: (.+):(?:\d+);(\d+)
-      #       replacement: ${1}:${2}
-      #       target_label: __address__
-      
-      #       # https://github.com/prometheus/prometheus/blob/master/documentation/examples/prometheus-kubernetes.yml#L79
       - job_name: 'kubernetes-endpoints'
         kubernetes_sd_configs:
           - role: endpoints
@@ -349,11 +227,27 @@ kube-prometheus-stack:
             regex: (.+)
             target_label: __metrics_path__
             replacement: /api/v1/nodes/${1}/proxy/metrics/cadvisor
-
+    ingress:
+      annotations: {}
+      ingressClassName: nginx
+      enabled: true
+      hosts:
+      - prometheus.{{ .Release.Name }}.devops.nakednerds.net
+      labels: {}
+      paths: []
+      tls: []
   grafana:
     enabled: true
     adminPassword: prom-operator
-
+    ingress:
+      annotations: {}
+      ingressClassName: nginx
+      enabled: true
+      hosts:
+      - grafana.green-platform.devops.nakednerds.net
+      labels: {}
+      paths: []
+      tls: []
     additionalDataSources:
     - editable: false
       isDefault: false
@@ -361,7 +255,8 @@ kube-prometheus-stack:
       access: proxy
       type: jaeger
       uid: webstore-traces
-      url: http://sreplayground-platform-jaeger-query.platform.svc:16686
+     # url: http://sreplayground-platform-jaeger-query.platform.svc:16686
+      url: http://{{ printf "%s-jaeger-query" .Release.Name }}:16686
     - name: Loki
       editable: false
       type: loki
@@ -405,7 +300,7 @@ opentelemetry-collector:
     exporters:
       logging: {}
       otlp:
-        endpoint: 'sreplayground-platform-jaeger-collector.platform.svc.cluster.local:4317'
+        endpoint: '{{ .Release.Name }}-jaeger-collector.{{ .Release.Name }}.svc.cluster.local:4317'
         tls: 
           insecure: true
     extensions:
@@ -456,3 +351,4 @@ opentelemetry-collector:
 
 jaeger-operator:
   enabled: true
+  clusterName: ""

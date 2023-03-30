@@ -20,5 +20,8 @@ dependencies:
 - name: jaeger-operator
   repository: https://jaegertracing.github.io/helm-charts
   version: 2.41.0
-digest: sha256:0023ccd69aa6fd0e8b085a7c1ca7d109f28e05f9f559645d5dd5ae985d465493
-generated: "2023-03-14T13:47:04.656739+01:00"
+- name: thanos
+  repository: https://charts.bitnami.com/bitnami
+  version: 12.3.1
+digest: sha256:7d9f893b49be33e2ef49135cda7780a24aa93093bd66d08ccc82311991eb277d
+generated: "2023-03-30T10:16:39.201613+02:00"
