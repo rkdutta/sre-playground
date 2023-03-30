@@ -40,3 +40,7 @@ dependencies:
     repository: https://jaegertracing.github.io/helm-charts
     version: 2.41.0
     condition: jaeger-operator.enabled
+  - name: thanos  
+    repository: https://charts.bitnami.com/bitnami
+    version: 12.3.1
+    condition: thanos.enabled

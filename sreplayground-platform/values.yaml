@@ -107,10 +107,28 @@ fluent-bit:
   - key: node-role.kubernetes.io/control-plane
     operator: "Exists"
 
+thanos:
+  enabled: true
+  query:
+    enabled: true
+    dnsDiscovery:
+      enabled: true
+      sidecarsService: "prometheus-operated"
+      sidecarsNamespace: "{{ .Release.Namespace }}"
 kube-prometheus-stack:
   enabled: true
   prometheus:
+    thanosService:
+      enabled: true
+    thanosServiceMonitor:
+      enabled: true
     prometheusSpec:
+      thanos:
+        baseImage: quay.io/thanos/thanos
+        version: v0.24.0
+        objectStorageConfig:
+          key: thanos.yaml
+          name: ""
       additionalScrapeConfigs:
       - job_name: 'kubernetes-endpoints'
         kubernetes_sd_configs:

@@ -102,6 +102,7 @@ helm upgrade --install  $RELEASE $DEPLOYMENT \
 --set jaeger-operator.clusterName=$CLUSTER_NAME \
 --set kube-prometheus-stack.grafana.ingress.hosts[0]="grafana.$CLUSTER_NAME.devops.nakednerds.net" \
 --set kube-prometheus-stack.prometheus.ingress.hosts[0]="prometheus.$CLUSTER_NAME.devops.nakednerds.net" \
+--set kube-prometheus-stack.prometheus.prometheusSpec.thanos.objectStorageConfig.name="$RELEASE-thanos-storage-connection-string" \
 --wait
 
 
@@ -124,12 +125,12 @@ helm upgrade --install  $RELEASE $DEPLOYMENT \
 --set ingress.components[0].rules[0].http.paths[0].pathType="Prefix" \
 --set ingress.components[0].rules[0].http.paths[0].backend.service.name="$RELEASE-dark-index-page" \
 --set ingress.components[0].rules[0].http.paths[0].backend.service.port.number="8080" \
---set ingress.components[0].name="otel" \
---set ingress.components[0].rules[0].host="otel.$RELEASE.devops.nakednerds.net" \
---set ingress.components[0].rules[0].http.paths[0].path="/v1/traces" \
---set ingress.components[0].rules[0].http.paths[0].pathType="Prefix" \
---set ingress.components[0].rules[0].http.paths[0].backend.service.name="$RELEASE-otelcol" \
---set ingress.components[0].rules[0].http.paths[0].backend.service.port.number="4318" 
+--set ingress.components[1].name="otel" \
+--set ingress.components[1].rules[0].host="otel.$RELEASE.devops.nakednerds.net" \
+--set ingress.components[1].rules[0].http.paths[0].path="/v1/traces" \
+--set ingress.components[1].rules[0].http.paths[0].pathType="Prefix" \
+--set ingress.components[1].rules[0].http.paths[0].backend.service.name="$RELEASE-otelcol" \
+--set ingress.components[1].rules[0].http.paths[0].backend.service.port.number="4318" 
 
 # install testing
 DEPLOYMENT=sreplayground-testing
