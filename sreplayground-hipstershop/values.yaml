@@ -3,43 +3,11 @@
 # Declare variables to be passed into your templates.
 
 ingress:
-  enabled: false
+  enabled: true
   class: nginx
   className: "nginx"
   annotations: {}
-  components:
-  - name: hipstershop
-    rules:
-    # - http:
-    #     paths:
-    #     - path: /
-    #       pathType: Prefix
-    #       backend:
-    #         service:
-    #           name: sreplayground-hipstershop-frontendproxy
-    #           port: 
-    #             number: 8080
-    #   host: "hipstershop.sre-playground.devops.nakednerds.net"
-    - http:
-        paths:
-        - backend:
-            service:
-              name: sreplayground-hipstershop-otelcol
-              port:
-                number: 4318
-          path: /v1/traces
-          pathType: Prefix
-      host: "otel.sre-playground.devops.nakednerds.net"
-    - http:
-        paths:
-        - path: /
-          pathType: Prefix
-          backend:
-            service:
-              name: sreplayground-hipstershop-dark-index-page
-              port: 
-                number: 8080
-      host: "sre-playground.devops.nakednerds.net"
+  components: []
 opentelemetry-demo:
   enabled: true
   default:

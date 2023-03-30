@@ -117,7 +117,19 @@ helm upgrade --install  $RELEASE $DEPLOYMENT \
 --set opentelemetry-demo.components.frontendProxy.ingress.hosts[0].paths[0].path="/" \
 --set opentelemetry-demo.components.frontendProxy.ingress.hosts[0].paths[0].pathType="Prefix" \
 --set opentelemetry-demo.components.frontendProxy.ingress.hosts[0].paths[0].port="8080" \
---set opentelemetry-demo.opentelemetry-collector.config.exporters.otlp.endpoint="$CLUSTER_NAME-platform-otel-collector-hub.$CLUSTER_NAME-platform.svc.cluster.local:4317"
+--set opentelemetry-demo.opentelemetry-collector.config.exporters.otlp.endpoint="$CLUSTER_NAME-platform-otel-collector-hub.$CLUSTER_NAME-platform.svc.cluster.local:4317" \
+--set ingress.components[0].name="index-page" \
+--set ingress.components[0].rules[0].host="$CLUSTER_NAME.devops.nakednerds.net" \
+--set ingress.components[0].rules[0].http.paths[0].path="/" \
+--set ingress.components[0].rules[0].http.paths[0].pathType="Prefix" \
+--set ingress.components[0].rules[0].http.paths[0].backend.service.name="$RELEASE-dark-index-page" \
+--set ingress.components[0].rules[0].http.paths[0].backend.service.port.number="8080" \
+--set ingress.components[0].name="otel" \
+--set ingress.components[0].rules[0].host="otel.$RELEASE.devops.nakednerds.net" \
+--set ingress.components[0].rules[0].http.paths[0].path="/v1/traces" \
+--set ingress.components[0].rules[0].http.paths[0].pathType="Prefix" \
+--set ingress.components[0].rules[0].http.paths[0].backend.service.name="$RELEASE-otelcol" \
+--set ingress.components[0].rules[0].http.paths[0].backend.service.port.number="4318" 
 
 # install testing
 DEPLOYMENT=sreplayground-testing
