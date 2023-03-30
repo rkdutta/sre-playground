@@ -17,6 +17,6 @@ spec:
     enabled: true
     ingressClassName: nginx
     hosts:
-    - jaeger.{{ .Values.global.clusterName }}.devops.nakednerds.net
+    - jaeger.{{ index .Values "jaeger-operator" "clusterName" }}.devops.nakednerds.net
   annotations:
     scheduler.alpha.kubernetes.io/critical-pod: ""

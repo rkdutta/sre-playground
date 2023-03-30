@@ -99,6 +99,7 @@ helm dependency update $DEPLOYMENT
 helm upgrade --install  $RELEASE $DEPLOYMENT \
 --namespace $RELEASE \
 --create-namespace \
+--set jaeger-operator.clusterName=$CLUSTER_NAME \
 --set kube-prometheus-stack.grafana.ingress.hosts[0]="grafana.$CLUSTER_NAME.devops.nakednerds.net" \
 --set kube-prometheus-stack.prometheus.ingress.hosts[0]="prometheus.$CLUSTER_NAME.devops.nakednerds.net" \
 --wait
