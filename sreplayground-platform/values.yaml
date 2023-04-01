@@ -298,7 +298,7 @@ kube-prometheus-stack:
       readOnly: true
 
 metrics-server:
-  enabled: true
+  enabled: false
 
 opentelemetry-collector:
   enabled: true

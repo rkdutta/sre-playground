@@ -91,10 +91,24 @@ helm upgrade --install $RELEASE $DEPLOYMENT \
 #install istio and kiali 
 #(cd istio && ./istio.sh)
 
+STORAGE_CONFIG_FILE=`mktemp`
+STORAGE_CONFIG_FILE_TEMPLATE="sreplayground-platform/files/thanos-storage-config.yaml"
+export STORAGE_ACCOUNT_NAME="thanosstorage0"
+export STORAGE_ACCOUNT_KEY=$STORAGE_ACCOUNT_KEY
+export STORAGE_ACCOUNT_CONTAINER_NAME=$CLUSTER_NAME
+yq '.config.storage_account_key=env(STORAGE_ACCOUNT_KEY) | .config.storage_account=env(STORAGE_ACCOUNT_NAME) | .config.container=env(STORAGE_ACCOUNT_CONTAINER_NAME)' $STORAGE_CONFIG_FILE_TEMPLATE > $STORAGE_CONFIG_FILE
+cat $STORAGE_CONFIG_FILE
+
+
 # install platform components
 DEPLOYMENT=sreplayground-platform
 RELEASE=$CLUSTER_NAME-platform
 kubectl create namespace $RELEASE --dry-run=client -o yaml | kubectl apply -f -
+kubectl create secret generic $RELEASE-thanos-storage-connection-string \
+  --from-file=thanos.yaml=$STORAGE_CONFIG_FILE \
+  --namespace $RELEASE \
+  --dry-run=client -o yaml | kubectl apply -f -
+
 helm dependency update $DEPLOYMENT
 helm upgrade --install  $RELEASE $DEPLOYMENT \
 --namespace $RELEASE \
@@ -105,7 +119,7 @@ helm upgrade --install  $RELEASE $DEPLOYMENT \
 --set kube-prometheus-stack.prometheus.ingress.hosts[0]="prometheus.$CLUSTER_NAME.devops.nakednerds.net" \
 --set kube-prometheus-stack.prometheus.prometheusSpec.thanos.objectStorageConfig.name="$RELEASE-thanos-storage-connection-string" \
 --set kube-prometheus-stack.prometheus.prometheusSpec.externalLabels.cluster_name="$CLUSTER_NAME" \
---set-file thanos.objstoreConfig=sreplayground-platform/files/thanos-storage-config.yaml \
+--set-file thanos.objstoreConfig=$STORAGE_CONFIG_FILE \
 --wait
 
 

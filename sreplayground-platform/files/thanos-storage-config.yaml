@@ -1,5 +1,5 @@
 type: Azure
 config:
-  storage_account: thanosstorage0
+  storage_account: ""
   storage_account_key: ""
-  container: 'metrics'
+  container: ''
