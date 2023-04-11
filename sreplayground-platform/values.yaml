@@ -114,6 +114,9 @@ thanos:
   enabled: true
   query:
     enabled: true
+    stores:
+    - amsterdam-platform-thanos-query-grpc.amsterdam-platform.svc.clusterset.local:10901
+    - japan-platform-thanos-query-grpc.japan-platform.svc.clusterset.local:10901
     dnsDiscovery:
       enabled: true
       sidecarsService: "prometheus-operated"
@@ -132,12 +135,30 @@ kube-prometheus-stack:
     thanosServiceMonitor:
       enabled: true
     prometheusSpec:
+      web:
+        tlsConfig:
+          keySecret:
+            key: tls.key
+            name: prometheus-tls
+          cert:
+            secret:
+              key: tls.crt
+              name: prometheus-tls
+        #  clientAuthType: RequireAndVerifyClientCert
       thanos:
         baseImage: quay.io/thanos/thanos
         version: v0.24.0
         objectStorageConfig:
           key: thanos.yaml
           name: ""
+        grpcServerTlsConfig:
+          keySecret:
+            key: tls.key
+            name: prometheus-tls
+          cert:
+            secret:
+              key: tls.crt
+              name: prometheus-tls
       additionalScrapeConfigs:
       - job_name: 'kubernetes-endpoints'
         kubernetes_sd_configs:
@@ -244,7 +265,10 @@ kube-prometheus-stack:
       - prometheus.{{ .Release.Name }}.devops.nakednerds.net
       labels: {}
       paths: []
-      tls: []
+      tls:
+      - secretName: prometheus-tls
+        hosts:
+          - prometheus.{{ .Release.Name }}.devops.nakednerds.net
   grafana:
     enabled: true
     adminPassword: prom-operator

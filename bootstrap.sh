@@ -26,7 +26,7 @@ waitForReadiness(){
 
 
 KUBEPROXY_OPTS=${3:-"with-kubeproxy"}
-CNI=${2:-"cilium"}
+CNI=${2:-"kindnet"}
 CLUSTER_NAME=${1:-"sre-playground"}
 
 
@@ -35,7 +35,7 @@ OVERRIDE_CONFIG_FILE=`mktemp`
 PLAYGROUND_CONFIG_FILE=`mktemp`
 
 CPU_ARCH="$(uname -m)"
-PLAYGROUND_CONFIG_FILE_URI="kind/bootstrap-config.yaml"
+PLAYGROUND_CONFIG_FILE_URI="kind/bootstrap-config-$CLUSTER_NAME.yaml"
 
 # reading the raw bootstrap config file and resolve the aliases
 yq 'explode(.)' $PLAYGROUND_CONFIG_FILE_URI > $PLAYGROUND_CONFIG_FILE
@@ -122,7 +122,7 @@ helm upgrade --install  $RELEASE $DEPLOYMENT \
 --set-file thanos.objstoreConfig=$STORAGE_CONFIG_FILE \
 --wait
 
-
+exit
 # install hipstershop
 DEPLOYMENT=sreplayground-hipstershop
 RELEASE=$CLUSTER_NAME-hipstershop
