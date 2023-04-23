@@ -11,3 +11,4 @@ nohup.out
 istio-*/
 *-local*
 */charts/*.tgz
+certs/
