@@ -8,17 +8,17 @@ spec:
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: chartmuseum
+  name: docker-registry
 ---
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: chartmuseum-ca
-  namespace: chartmuseum
+  name: docker-registry-ca
+  namespace: docker-registry
 spec:
   isCA: true
-  commonName: chartmuseum-ca
-  secretName: chartmuseum-ca
+  commonName: docker-registry-ca
+  secretName: docker-registry-ca
   privateKey:
     algorithm: ECDSA
     size: 256
@@ -30,46 +30,46 @@ spec:
 apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
-  name: chartmuseum-ca-issuer
-  namespace: chartmuseum
+  name: docker-registry-ca-issuer
+  namespace: docker-registry
 spec:
   ca:
-    secretName: chartmuseum-ca
+    secretName: docker-registry-ca
 ---
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: chartmuseum-server-tls
-  namespace: chartmuseum
+  name: docker-registry-server-tls
+  namespace: docker-registry
 spec:
-  commonName: chartmuseum-server-tls
-  secretName: chartmuseum-server-tls
+  commonName: docker-registry-server-tls
+  secretName: docker-registry-server-tls
   dnsNames:
-  - chartmuseum.switch.com
+  - docker-registry.switch.com
   - localhost
   privateKey:
     algorithm: ECDSA
     size: 256
   issuerRef:
-    name: chartmuseum-ca-issuer
+    name: docker-registry-ca-issuer
     kind: Issuer
     group: cert-manager.io
 ---
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: chartmuseum-client-tls
-  namespace: chartmuseum
+  name: docker-registry-client-tls
+  namespace: docker-registry
 spec:
-  commonName: chartmuseum-client-tls
-  secretName: chartmuseum-client-tls
+  commonName: docker-registry-client-tls
+  secretName: docker-registry-client-tls
   dnsNames:
-  - chartmuseum.switch.com
+  - docker-registry.switch.com
   - localhost
   privateKey:
     algorithm: ECDSA
     size: 256
   issuerRef:
-    name: chartmuseum-ca-issuer
+    name: docker-registry-ca-issuer
     kind: Issuer
     group: cert-manager.io

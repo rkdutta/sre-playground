@@ -1,0 +1,15 @@
+COMPUTED VALUES:
+image:
+  pullPolicy: IfNotPresent
+  repository: ghcr.io/project-zot/zot-linux-amd64
+  tag: v2.0.0-rc3
+replicaCount: 1
+service:
+  port: 5000
+  type: ClusterIP
+serviceAccount:
+  annotations: {}
+  create: true
+  name: ""
+http:
+  address: 127.0.0.1

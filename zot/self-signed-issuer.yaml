@@ -8,17 +8,17 @@ spec:
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: chartmuseum
+  name: zot
 ---
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: chartmuseum-ca
-  namespace: chartmuseum
+  name: zot-ca
+  namespace: zot
 spec:
   isCA: true
-  commonName: chartmuseum-ca
-  secretName: chartmuseum-ca
+  commonName: zot-ca
+  secretName: zot-ca
   privateKey:
     algorithm: ECDSA
     size: 256
@@ -30,46 +30,46 @@ spec:
 apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
-  name: chartmuseum-ca-issuer
-  namespace: chartmuseum
+  name: zot-ca-issuer
+  namespace: zot
 spec:
   ca:
-    secretName: chartmuseum-ca
+    secretName: zot-ca
 ---
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: chartmuseum-server-tls
-  namespace: chartmuseum
+  name: zot-server-tls
+  namespace: zot
 spec:
-  commonName: chartmuseum-server-tls
-  secretName: chartmuseum-server-tls
+  commonName: zot-server-tls
+  secretName: zot-server-tls
   dnsNames:
-  - chartmuseum.switch.com
+  - zot.switch.com
   - localhost
   privateKey:
     algorithm: ECDSA
     size: 256
   issuerRef:
-    name: chartmuseum-ca-issuer
+    name: zot-ca-issuer
     kind: Issuer
     group: cert-manager.io
 ---
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: chartmuseum-client-tls
-  namespace: chartmuseum
+  name: zot-client-tls
+  namespace: zot
 spec:
-  commonName: chartmuseum-client-tls
-  secretName: chartmuseum-client-tls
+  commonName: zot-client-tls
+  secretName: zot-client-tls
   dnsNames:
-  - chartmuseum.switch.com
+  - zot.switch.com
   - localhost
   privateKey:
     algorithm: ECDSA
     size: 256
   issuerRef:
-    name: chartmuseum-ca-issuer
+    name: zot-ca-issuer
     kind: Issuer
     group: cert-manager.io

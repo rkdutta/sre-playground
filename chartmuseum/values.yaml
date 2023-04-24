@@ -1,0 +1,143 @@
+COMPUTED VALUES:
+affinity: {}
+commonLabels: {}
+containerSecurityContext: {}
+deployment:
+  annotations: {}
+  extraVolumeMounts:
+  - name: chartmuseum-server-tls
+    mountPath: "/etc/tls"
+    readOnly: true
+  extraVolumes:
+  - name: chartmuseum-server-tls
+    secret:
+      secretName: chartmuseum-server-tls
+  labels: {}
+  sidecarContainers: {}
+env:
+  existingSecret: chartmuseum-basic-auth
+  existingSecretMappings:
+    BASIC_AUTH_PASS: basic-auth-pass
+    BASIC_AUTH_USER: basic-auth-user
+  field: {}
+  open:
+    ALLOW_OVERWRITE: false
+    AUTH_ANONYMOUS_GET: false
+    AUTH_REALM: null
+    AUTH_SERVICE: null
+    BEARER_AUTH: false
+    CACHE: null
+    CACHE_REDIS_ADDR: null
+    CACHE_REDIS_DB: 0
+    CHART_POST_FORM_FIELD_NAME: chart
+    CHART_URL: null
+    CONTEXT_PATH: null
+    DEBUG: false
+    DEPTH: 0
+    DISABLE_API: false
+    DISABLE_STATEFILES: false
+    ENABLE_METRICS: false
+    INDEX_LIMIT: 0
+    LOG_JSON: true
+    PROV_POST_FORM_FIELD_NAME: prov
+    STORAGE: local
+extraArgs:
+- --port=8443
+- --tls-cert=/etc/tls/tls.crt
+- --tls-key=/etc/tls/tls.key
+- --disable-force-overwrite
+- --debug
+- --depth-dynamic
+#- --tls-ca-cert=/etc/tls/ca.crt (when you want to enable auth using tls, but liveliness probes doesn't support tls)
+extraPorts:
+- name: https
+  containerPort: 8443
+image:
+  pullPolicy: IfNotPresent
+  repository: ghcr.io/helm/chartmuseum
+  tag: v0.15.0
+ingress:
+  annotations: {}
+  enabled: true
+  hosts:
+  - name: chartmuseum.switch.com
+    path: /
+    tls: true
+    tlsSecret: chartmuseum-server-tls
+  ingressClassName: nignx
+  labels: {}
+  pathType: ImplementationSpecific
+nodeSelector: {}
+persistence:
+  accessMode: ReadWriteOnce
+  enabled: false
+  labels: {}
+  path: /storage
+  pv:
+    accessMode: ReadWriteOnce
+    capacity:
+      storage: 8Gi
+    enabled: false
+    nfs:
+      path: null
+      server: null
+    pvname: null
+  size: 8Gi
+podAnnotations: {}
+podLabels: {}
+priorityClassName: ""
+probes:
+  liveness:
+    failureThreshold: 3
+    initialDelaySeconds: 5
+    periodSeconds: 10
+    successThreshold: 1
+    timeoutSeconds: 1
+  livenessHttpGetConfig:
+    scheme: HTTPS
+    port: https
+  readiness:
+    failureThreshold: 3
+    initialDelaySeconds: 5
+    periodSeconds: 10
+    successThreshold: 1
+    timeoutSeconds: 1
+  readinessHttpGetConfig:
+    scheme: HTTPS
+    port: https
+replicaCount: 1
+resources: {}
+secret:
+  labels: {}
+securityContext:
+  enabled: true
+  fsGroup: 1000
+service:
+  annotations: {}
+  externalPort: 8443
+  externalTrafficPolicy: Local
+  labels: {}
+  loadBalancerIP: null
+  loadBalancerSourceRanges: []
+  nodePort: null
+  servicename: null
+  targetPort: https
+  type: ClusterIP
+serviceAccount:
+  annotations: {}
+  automountServiceAccountToken: false
+  create: false
+  name: ""
+serviceMonitor:
+  enabled: false
+  labels: {}
+  metricsPath: /metrics
+strategy:
+  type: RollingUpdate
+tolerations: []
+volumePermissions:
+  image:
+    pullPolicy: Always
+    registry: docker.io
+    repository: bitnami/minideb
+    tag: buster
